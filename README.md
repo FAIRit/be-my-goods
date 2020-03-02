@@ -22,7 +22,8 @@ The app will allow logged users to store their music CDs collection. CDs can be 
 * User after logging can see top albums of his fav genres on main page.
 
 ## Technologies
-* Spring Boot 2.2.4
+* Spring Boot 2.2.5
+* Java 13
 * PostgreSQL 12
 * Docker
 
@@ -31,6 +32,8 @@ The app will allow logged users to store their music CDs collection. CDs can be 
 
 ## Setup
 Work in progress.
+
+##Features
 
 
 ## Status
