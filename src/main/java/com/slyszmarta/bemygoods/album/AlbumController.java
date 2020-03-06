@@ -1,6 +1,5 @@
 package com.slyszmarta.bemygoods.album;
 
-import com.slyszmarta.bemygoods.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,6 @@ import javax.validation.Valid;
 public class AlbumController {
 
     private final AlbumService albumService;
-    private final UserService userService;
 
     @GetMapping
     public String getAlbum(Model model){

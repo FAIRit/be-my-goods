@@ -1,7 +1,7 @@
 package com.slyszmarta.bemygoods.album;
 
 import com.slyszmarta.bemygoods.track.Track;
-import com.slyszmarta.bemygoods.user.User;
+import com.slyszmarta.bemygoods.user.ApplicationUser;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,7 +26,7 @@ public class Album {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private ApplicationUser user;
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Track> tracksList;

@@ -32,14 +32,14 @@ The app will allow logged users to store their music CDs collection. CDs can be 
 
 ## Setup
 Work in progress.
-
-##Features
+## Features
 
 
 ## Status
 Project is in progress.
 
 ## Inspiration
+https://dev.to/cuongld2/create-apis-with-jwt-authorization-using-spring-boot-24f9
 
 
 ## Contact
