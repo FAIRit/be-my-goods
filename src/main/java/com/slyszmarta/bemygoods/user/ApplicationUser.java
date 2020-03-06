@@ -12,7 +12,7 @@ import java.util.List;
 public class ApplicationUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
     @Column(name = "user_id")
     private Long id;
 
@@ -25,7 +25,7 @@ public class ApplicationUser {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "country", nullable = false)
+    @Column(name = "country")
     private String country;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
