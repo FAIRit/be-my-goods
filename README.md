@@ -40,7 +40,10 @@ Project is in progress.
 
 ## Inspiration
 https://dev.to/cuongld2/create-apis-with-jwt-authorization-using-spring-boot-24f9
+
 https://www.baeldung.com/spring-boot-testing
+
+https://springframework.guru/using-resttemplate-in-spring/
 
 
 ## Contact
