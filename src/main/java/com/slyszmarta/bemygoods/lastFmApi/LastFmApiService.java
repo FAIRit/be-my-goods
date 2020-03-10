@@ -1,6 +1,7 @@
 package com.slyszmarta.bemygoods.lastFmApi;
 
 import com.slyszmarta.bemygoods.album.AlbumDto;
+import com.slyszmarta.bemygoods.album.Albums;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,7 @@ public class LastFmApiService {
     @Value("${app.last.fm.api-url}")
     private String baseApiUrl;
 
-    @Value("${api.last.fm.api-url}")
+    @Value("${app.last.fm.api-key}")
     private String apiKey;
 
     private final RestTemplate restTemplate;
@@ -24,20 +25,19 @@ public class LastFmApiService {
         this.restTemplate = restTemplate;
     }
 
-    public List<AlbumDto> searchAlbums(final String artist, final String title){
+
+    public Albums searchAlbums(final String artist, final String title){
         String fullPath = getFullPath(artist, title);
 
-        ResponseEntity<AlbumDto> apiResponse = restTemplate.getForEntity(fullPath, AlbumDto.class);
-
-        return apiResponse.getBody() != null ? Arrays.asList(apiResponse.getBody()) :
-                Collections.emptyList();
+        ResponseEntity<Albums> entity = restTemplate.getForEntity(fullPath, Albums.class);
+        return entity.getBody() != null? new Albums(entity.getBody().getAlbums()) : new Albums(Collections.emptyList());
     }
 
 
-    private String getFullPath(final String artist, final String title){
+    private String getFullPath(final String artist, final String title) {
         StringBuffer fullPath = new StringBuffer();
         fullPath.append(baseApiUrl);
-        fullPath.append(" /2.0/?method=album.getinfo&api_key=");
+        fullPath.append("/2.0/?method=album.getinfo&api_key=");
         fullPath.append(apiKey);
         fullPath.append("&artist=");
         fullPath.append(artist.replaceAll(" ", "%20"));

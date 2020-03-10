@@ -2,14 +2,21 @@ package com.slyszmarta.bemygoods.album;
 
 import com.slyszmarta.bemygoods.track.Track;
 import com.slyszmarta.bemygoods.user.ApplicationUser;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Entity(name="albums")
+@Entity(name = "albums")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Album {
 
     @Id
@@ -18,11 +25,14 @@ public class Album {
     private Long id;
 
     @NotNull
-    @Column(name = "title")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "artist")
     private String artist;
+
+    @Column(name = "release_date")
+    private LocalDateTime releaseDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

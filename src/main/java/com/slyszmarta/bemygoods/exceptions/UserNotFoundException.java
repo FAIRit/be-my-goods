@@ -1,4 +1,4 @@
-package com.slyszmarta.bemygoods.user;
+package com.slyszmarta.bemygoods.exceptions;
 
 import lombok.Getter;
 

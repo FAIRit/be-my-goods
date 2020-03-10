@@ -1,7 +1,7 @@
 package com.slyszmarta.bemygoods.user;
 
+import com.slyszmarta.bemygoods.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -57,10 +57,5 @@ public class ApplicationUserService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         return new User(applicationUser.get().getUsername(), applicationUser.get().getPassword(), emptyList());
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

@@ -17,7 +17,7 @@ The app will allow logged users to store their music CDs collection. CDs can be 
 
 ## User stories
 * User can create his own account.
-* User can browse music CD inputting query - artist or title.
+* User can browse music CD inputting query - artist and title.
 * User can see detailed info about album browsed.
 * User after logging can see top albums of his fav genres on main page.
 
@@ -26,12 +26,14 @@ The app will allow logged users to store their music CDs collection. CDs can be 
 * Java 13
 * PostgreSQL 12
 * Docker
+* Swagger 2
 
 ## Used API
 * [Last.fm API](https://www.last.fm/api/)
 
 ## Setup
 Work in progress.
+
 ## Features
 
 
@@ -45,6 +47,11 @@ https://www.baeldung.com/spring-boot-testing
 
 https://springframework.guru/using-resttemplate-in-spring/
 
+https://www.youtube.com/watch?v=gduKpLW_vdY
+
+https://www.youtube.com/watch?v=8s9I1G4tXhA
+
+https://sztukakodu.pl/jak-definiowac-kody-http-odpowiedzi-w-springu/
 
 ## Contact
 Created by [Marta Słysz](https://github.com/MartaSlysz) during FairIT - training and recruitment program for women.
