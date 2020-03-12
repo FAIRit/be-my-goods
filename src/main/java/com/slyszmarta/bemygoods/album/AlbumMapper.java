@@ -1,6 +1,5 @@
 package com.slyszmarta.bemygoods.album;
 
-import com.slyszmarta.bemygoods.lastFmApi.AlbumInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -12,7 +11,5 @@ public interface AlbumMapper {
     Album map(AlbumDto dto);
 
     AlbumDto map(Album entity);
-
-    AlbumDto mapAlbumInfoToBookDto(AlbumInfo albumInfo);
 
 }

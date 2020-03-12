@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -16,8 +16,7 @@ public class AlbumInfo {
 
     private String name;
     private String artist;
-    private LocalDateTime releaseDate;
-    private String[] topTags;
+    private LocalDate releaseDate;
     private List<TrackInfo> tracksList;
     private List<Wiki> wikiInformation;
 }

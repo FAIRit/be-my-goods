@@ -1,6 +1,5 @@
-package com.slyszmarta.bemygoods.track;
+package com.slyszmarta.bemygoods.album;
 
-import com.slyszmarta.bemygoods.album.Album;
 import lombok.Data;
 
 import javax.persistence.*;

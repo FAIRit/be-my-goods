@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.AccessDeniedException;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,43 +17,43 @@ public class AlbumService {
     private final AlbumRepository albumRepository;
     private final ApplicationUserService userService;
 
-
-    public Albums getAllUsersAlbums(final Long usersId) {
-        return new Albums(albumRepository.findAllByUserId(usersId).stream()
+    public Albums getAllUserAlbums(Long userId) {
+        return new Albums(albumRepository.findAllByUserId(userId).stream()
                 .map(AlbumMapper.INSTANCE::map)
                 .collect(Collectors.toList()));
     }
 
-    public AlbumDto getUsersAlbum(final Long usersId, final Long albumsId) throws AccessDeniedException {
-        Album albumToFind = getExistingAlbumById(albumsId);
-        if (albumToFind.getUser().getId().equals(usersId)) {
-            return AlbumMapper.INSTANCE.map(albumToFind);
+    public AlbumDto getUserAlbum(Long userId, Long albumId) {
+        var albumToFind = getExistingAlbumById(albumId);
+        if (albumToFind.getUser().getId().equals(userId)) {
+            return (AlbumMapper.INSTANCE.map(albumToFind));
+        } else {
+            throw new AlbumNotFoundException(albumId);
         }
-        throw new AccessDeniedException("You don't have permission to access this content. Please log in.");
     }
 
-    public Album saveAlbum(final AlbumDto dto, final Long usersId) {
-        ApplicationUser user = userService.getExistingUser(usersId);
-        Album albumToSave = AlbumMapper.INSTANCE.map(dto);
+    public Album saveAlbum(AlbumDto dto, Long userId) {
+        var user = userService.getExistingUser(userId);
+        var albumToSave = AlbumMapper.INSTANCE.map(dto);
         albumToSave.setUser(user);
         albumRepository.save(albumToSave);
         return albumToSave;
     }
 
-
-    public void deleteUsersAlbum(final Long usersId, final Long albumsId) throws AccessDeniedException {
-        Album albumToFind = getExistingAlbumById(albumsId);
-        if (albumToFind.getUser().getId().equals(usersId)) {
-            albumRepository.deleteById(albumsId);
+    public void deleteUsersAlbum(Long userId, Long albumId) {
+        var albumToFind = getExistingAlbumById(albumId);
+        if (albumToFind.getUser().getId().equals(userId)) {
+            albumRepository.deleteById(albumId);
+        } else {
+            throw new AlbumNotFoundException(albumId);
         }
-        throw new AccessDeniedException("You don't have permission to access this content. Please log in.");
     }
 
-    public void deleteAllUsersAlbum(final Long usersId) {
+    public void deleteAllUsersAlbum(Long usersId) {
         albumRepository.deleteAllByUserId(usersId);
     }
 
-    public Album getExistingAlbumById(final Long albumId) {
+    public Album getExistingAlbumById(Long albumId) {
         return albumRepository.findById(albumId).orElseThrow(() -> new AlbumNotFoundException(albumId));
     }
 }

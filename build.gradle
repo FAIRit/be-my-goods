@@ -38,7 +38,6 @@ dependencies {
     }
     testCompile 'org.assertj:assertj-core'
     testImplementation 'org.springframework.security:spring-security-test'
-    implementation 'junit:junit:4.12'
 }
 
 test {

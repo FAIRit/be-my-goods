@@ -1,6 +1,5 @@
 package com.slyszmarta.bemygoods.album;
 
-import com.slyszmarta.bemygoods.track.Track;
 import com.slyszmarta.bemygoods.user.ApplicationUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -32,7 +31,7 @@ public class Album {
     private String artist;
 
     @Column(name = "release_date")
-    private LocalDateTime releaseDate;
+    private LocalDate releaseDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
