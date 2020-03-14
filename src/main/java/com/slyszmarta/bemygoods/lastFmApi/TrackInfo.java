@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 public class TrackInfo {
 
     private String name;
-    //duration in seconds
-    private int duration;
+    private int durationInSeconds;
     private String artist;
 
 }

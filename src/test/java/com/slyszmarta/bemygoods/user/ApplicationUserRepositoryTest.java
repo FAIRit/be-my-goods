@@ -1,5 +1,6 @@
 package com.slyszmarta.bemygoods.user;
 
+import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,70 +21,102 @@ public class ApplicationUserRepositoryTest {
     @Autowired
     private ApplicationUserRepository applicationUserRepository;
 
-    // given
-    public ApplicationUser given(){
-        ApplicationUser alex = new ApplicationUser();
-        alex.setId(1L);
-        alex.setUsername("alex");
-        alex.setPassword("password");
-        alex.setCountry("country");
-        alex.setEmail("alex@alex.com");
-        alex.setAlbumList(Collections.emptyList());
-        entityManager.merge(alex);
-        entityManager.flush();
-
-        return alex;
-    }
-
     @Test
     public void whenFindByUsername_thenReturnUser() {
+        //given
+        var faker = new Faker();
+        ApplicationUser user = ApplicationUser.builder()
+                .id(faker.number().randomNumber())
+                .username(faker.name().firstName())
+                .password(faker.animal().name())
+                .country(faker.country().name())
+                .email("faker@faker.com")
+                .albumList(Collections.emptyList())
+                .build();
+        entityManager.merge(user);
+        entityManager.flush();
         // when
-        Optional<ApplicationUser> found = applicationUserRepository.findUserByUsername(given().getUsername());
-
+        Optional<ApplicationUser> found = applicationUserRepository.findUserByUsername(user.getUsername());
         // then
-        assertThat(found.get().getUsername())
-                .isEqualTo(given().getUsername());
+        assertThat(found.get().getUsername()).isEqualTo(user.getUsername());
     }
 
     @Test
     public void whenFindByEmail_thenReturnUser() {
+        //given
+        var faker = new Faker();
+        ApplicationUser user = ApplicationUser.builder()
+                .id(faker.number().randomNumber())
+                .username(faker.name().firstName())
+                .password(faker.animal().name())
+                .country(faker.country().name())
+                .email("faker@faker.com")
+                .albumList(Collections.emptyList())
+                .build();
+        entityManager.merge(user);
+        entityManager.flush();
         // when
-        Optional<ApplicationUser> found = applicationUserRepository.findUserByEmail((given().getEmail()));
-
+        Optional<ApplicationUser> found = applicationUserRepository.findUserByEmail((user.getEmail()));
         // then
-        assertThat(found.get().getUsername())
-                .isEqualTo(given().getUsername());
+        assertThat(found.get().getUsername()).isEqualTo(user.getUsername());
     }
 
     @Test
     public void whenFindById_thenReturnUser() {
-
+        //given
+        var faker = new Faker();
+        ApplicationUser user = ApplicationUser.builder()
+                .id(faker.number().randomNumber())
+                .username(faker.name().firstName())
+                .password(faker.animal().name())
+                .country(faker.country().name())
+                .email("faker@faker.com")
+                .albumList(Collections.emptyList())
+                .build();
+        entityManager.merge(user);
+        entityManager.flush();
         // when
-        Optional<ApplicationUser> found = applicationUserRepository.findUserById((given().getId()));
-
+        Optional<ApplicationUser> found = applicationUserRepository.findUserById((user.getId()));
         // then
-        assertThat(found.get().getUsername())
-                .isEqualTo(given().getUsername());
+        assertThat(found.get().getUsername()).isEqualTo(user.getUsername());
     }
 
     @Test
     public void whenExistsByEmail_thenReturnTrue(){
-
+        //given
+        var faker = new Faker();
+        ApplicationUser user = ApplicationUser.builder()
+                .id(faker.number().randomNumber())
+                .username(faker.name().firstName())
+                .password(faker.animal().name())
+                .country(faker.country().name())
+                .email("faker@faker.com")
+                .albumList(Collections.emptyList())
+                .build();
+        entityManager.merge(user);
+        entityManager.flush();
         //when
-        Boolean found = applicationUserRepository.existsByEmail((given().getEmail()));
-
-
+        Boolean found = applicationUserRepository.existsByEmail(user.getEmail());
         //then
         Assertions.assertTrue(found);
     }
 
     @Test
     public void whenExistsByUsername_thenReturnTrue(){
-
+        //given
+        var faker = new Faker();
+        ApplicationUser user = ApplicationUser.builder()
+                .id(faker.number().randomNumber())
+                .username(faker.name().firstName())
+                .password(faker.animal().name())
+                .country(faker.country().name())
+                .email("faker@faker.com")
+                .albumList(Collections.emptyList())
+                .build();
+        entityManager.merge(user);
+        entityManager.flush();
         //when
-        Boolean found = applicationUserRepository.existsByUsername((given().getUsername()));
-
-
+        Boolean found = applicationUserRepository.existsByUsername((user.getUsername()));
         //then
         Assertions.assertTrue(found);
     }

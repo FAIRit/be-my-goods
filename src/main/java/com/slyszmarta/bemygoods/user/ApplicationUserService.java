@@ -46,14 +46,14 @@ public class ApplicationUserService implements UserDetailsService {
     }
 
     public ApplicationUser getExistingUser(final Long id) {
-        return applicationUserRepository.findById(id).orElseThrow(() ->
+        return applicationUserRepository.findUserById(id).orElseThrow(() ->
                 new UserNotFoundException(id));
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<ApplicationUser> applicationUser = applicationUserRepository.findUserByUsername(username);
-        if (applicationUser == null) {
+        if (!applicationUser.isPresent()) {
             throw new UsernameNotFoundException(username);
         }
         return new User(applicationUser.get().getUsername(), applicationUser.get().getPassword(), emptyList());

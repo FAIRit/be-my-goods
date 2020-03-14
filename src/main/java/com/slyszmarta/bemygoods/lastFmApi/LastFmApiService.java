@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collections;
 
 @Component
-public class LastFmApiService {
+public class LastFmApiService implements AlbumService {
     @Value("${last^fm.api-url}")
     private String baseApiUrl;
 

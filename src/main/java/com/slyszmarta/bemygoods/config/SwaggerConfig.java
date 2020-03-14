@@ -1,8 +1,8 @@
 package com.slyszmarta.bemygoods.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -21,10 +21,8 @@ import java.util.Collections;
 @Configuration
 @EnableSwagger2
 @Order(1000)
+@Profile("development")
 public class SwaggerConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
-
-    @Value("${prop.swagger.enabled:false}")
-    private boolean enableSwagger;
 
     @Bean
     public Docket swaggerConfiguration(){
@@ -50,7 +48,6 @@ public class SwaggerConfig extends WebSecurityConfigurerAdapter implements WebMv
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        if (enableSwagger)
             web.ignoring().antMatchers("/v2/api-docs",
                     "/configuration/ui",
                     "/swagger-resources/**",
@@ -61,10 +58,8 @@ public class SwaggerConfig extends WebSecurityConfigurerAdapter implements WebMv
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        if (enableSwagger) {
             registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
             registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-        }
     }
 }
 

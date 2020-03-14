@@ -1,18 +1,23 @@
 package com.slyszmarta.bemygoods.album;
 
 import com.slyszmarta.bemygoods.user.ApplicationUser;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
+import java.net.URI;
+import java.net.URISyntaxException;
+
 @RestController
 @RequestMapping("/albums")
 public class AlbumController {
 
     private final AlbumService albumService;
+
+    public AlbumController(AlbumService albumService) {
+        this.albumService = albumService;
+    }
 
     @GetMapping
     // User
@@ -29,8 +34,8 @@ public class AlbumController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addAlbum(@RequestBody  AlbumDto dto, @AuthenticationPrincipal ApplicationUser user) {
-        albumService.saveAlbum(dto, user.getId());
+    public ResponseEntity addAlbum(@RequestBody  AlbumDto dto, @AuthenticationPrincipal ApplicationUser user) throws URISyntaxException {
+        return ResponseEntity.created(new URI("/")).body(albumService.saveAlbum(dto, user.getId()));
     }
 
     @DeleteMapping
