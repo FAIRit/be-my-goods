@@ -21,18 +21,23 @@ public class ApplicationUserRepositoryTest {
     @Autowired
     private ApplicationUserRepository applicationUserRepository;
 
-    @Test
-    public void whenFindByUsername_thenReturnUser() {
-        //given
+    public ApplicationUser given(){
         var faker = new Faker();
         ApplicationUser user = ApplicationUser.builder()
                 .id(faker.number().randomNumber())
                 .username(faker.name().firstName())
                 .password(faker.animal().name())
                 .country(faker.country().name())
-                .email("faker@faker.com")
+                .email(faker.internet().emailAddress())
                 .albumList(Collections.emptyList())
                 .build();
+        return user;
+    }
+
+    @Test
+    public void whenFindByUsername_thenReturnUser() {
+        //given
+        var user = given();
         entityManager.merge(user);
         entityManager.flush();
         // when
@@ -44,15 +49,7 @@ public class ApplicationUserRepositoryTest {
     @Test
     public void whenFindByEmail_thenReturnUser() {
         //given
-        var faker = new Faker();
-        ApplicationUser user = ApplicationUser.builder()
-                .id(faker.number().randomNumber())
-                .username(faker.name().firstName())
-                .password(faker.animal().name())
-                .country(faker.country().name())
-                .email("faker@faker.com")
-                .albumList(Collections.emptyList())
-                .build();
+        var user = given();
         entityManager.merge(user);
         entityManager.flush();
         // when
@@ -64,15 +61,7 @@ public class ApplicationUserRepositoryTest {
     @Test
     public void whenFindById_thenReturnUser() {
         //given
-        var faker = new Faker();
-        ApplicationUser user = ApplicationUser.builder()
-                .id(faker.number().randomNumber())
-                .username(faker.name().firstName())
-                .password(faker.animal().name())
-                .country(faker.country().name())
-                .email("faker@faker.com")
-                .albumList(Collections.emptyList())
-                .build();
+        var user = given();
         entityManager.merge(user);
         entityManager.flush();
         // when
@@ -84,15 +73,7 @@ public class ApplicationUserRepositoryTest {
     @Test
     public void whenExistsByEmail_thenReturnTrue(){
         //given
-        var faker = new Faker();
-        ApplicationUser user = ApplicationUser.builder()
-                .id(faker.number().randomNumber())
-                .username(faker.name().firstName())
-                .password(faker.animal().name())
-                .country(faker.country().name())
-                .email("faker@faker.com")
-                .albumList(Collections.emptyList())
-                .build();
+        var user = given();
         entityManager.merge(user);
         entityManager.flush();
         //when
@@ -104,15 +85,7 @@ public class ApplicationUserRepositoryTest {
     @Test
     public void whenExistsByUsername_thenReturnTrue(){
         //given
-        var faker = new Faker();
-        ApplicationUser user = ApplicationUser.builder()
-                .id(faker.number().randomNumber())
-                .username(faker.name().firstName())
-                .password(faker.animal().name())
-                .country(faker.country().name())
-                .email("faker@faker.com")
-                .albumList(Collections.emptyList())
-                .build();
+        var user = given();
         entityManager.merge(user);
         entityManager.flush();
         //when
