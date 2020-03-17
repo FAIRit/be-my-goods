@@ -3,6 +3,7 @@ package com.slyszmarta.bemygoods.album;
 import com.slyszmarta.bemygoods.user.ApplicationUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class AlbumController {
     }
 
     @GetMapping
-    // User
+    @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity getAllUsersAlbums(@AuthenticationPrincipal ApplicationUser user) {
         return ResponseEntity.ok(albumService.getAllUserAlbums(user.getId()));
@@ -35,7 +36,7 @@ public class AlbumController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity addAlbum(@RequestBody  AlbumDto dto, @AuthenticationPrincipal ApplicationUser user) throws URISyntaxException {
-        return ResponseEntity.created(new URI("/")).body(albumService.saveAlbum(dto, user.getId()));
+        return ResponseEntity.created(new URI("/albums/{albumId}")).body(albumService.saveAlbum(dto, user.getId()));
     }
 
     @DeleteMapping
