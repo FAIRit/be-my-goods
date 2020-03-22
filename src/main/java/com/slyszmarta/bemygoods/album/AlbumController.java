@@ -27,6 +27,13 @@ public class AlbumController {
         return ResponseEntity.ok(albumService.getAllUserAlbums(user.getId()));
     }
 
+    @GetMapping("/{tag}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity getAllTagAlbums(@AuthenticationPrincipal ApplicationUser user, String tag){
+        return ResponseEntity.ok(albumService.getAllTagAlbums(user.getId(), tag));
+    }
+
     @GetMapping("/{albumId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity getAlbumById(@PathVariable Long albumId) {
