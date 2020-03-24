@@ -12,4 +12,6 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
 
     void deleteAllByUserId(Long id);
 
+    List<Album> findByUserIdAndAlbumTags(Long id, String tag);
+
 }

@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity(name = "albums")
@@ -20,7 +22,7 @@ public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "album_id", updatable = false, nullable = false)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     @NotNull
@@ -39,5 +41,9 @@ public class Album {
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Track> tracksList;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "albums_tags", joinColumns = @JoinColumn(name = "album_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tags_id", referencedColumnName = "id"))
+    private Set<AlbumTag> albumTags = new HashSet<>();
 
 }
