@@ -20,6 +20,7 @@ The app will allow logged users to store their music CDs collection. CDs can be 
 * User can browse music CD inputting query - artist and title.
 * User can see detailed info about album browsed.
 * User after logging can see top albums of his fav genres on main page.
+* User can use his own tags to mark albums.
 
 ## Technologies
 * Spring Boot 2.2.5
@@ -32,10 +33,47 @@ The app will allow logged users to store their music CDs collection. CDs can be 
 * [Last.fm API](https://www.last.fm/api/)
 
 ## Setup
-Work in progress.
+
+### Using Gradle, JAVA and PostgreSQL
+In application-production.properties please insert your datasource credentials (username, password and URL), API key and JWT secret.
+
+Build application
+```
+$ gradle clean build
+```
+Run application
+```
+$ java -jar -Dspring.profiles.active=production build/libs/*.jar 
+```
+
+### Using Docker and docker-compose
+In application-production.properties please insert your datasource credentials (username, password and URL), API key and JWT secret.
+In docker-compose.yml please insert your datasource credentials (DB, user, password and URL)
+
+Build application
+```
+$ gradle clean build
+```
+In build folder create dependency directory.
+```
+mkdir dependency
+```
+
+In dependency directory extract fatJar from build/libs directory
+```
+cd dependency 
+jar -xf ../libs/*.jar
+```
+
+Run with docker-compose
+```
+docker-compose build
+docker-compose up
+```
+
 
 ## Features
-
+Work in progress.
 
 ## Status
 Project is in progress.
@@ -60,6 +98,12 @@ https://www.callicoder.com/spring-boot-file-upload-download-jpa-hibernate-mysql-
 https://www.baeldung.com/gradle-fat-jar
 
 https://www.baeldung.com/jpa-tagging-advanced
+
+https://blog.codeleak.pl/2020/03/spring-boot-docker-compose.html
+
+https://www.youtube.com/watch?v=YFl2mCHdv24
+
+https://www.youtube.com/watch?v=Qw9zlE3t8Ko
 
 
 ## Contact

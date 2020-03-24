@@ -7,7 +7,6 @@ import com.slyszmarta.bemygoods.security.registration.VerificationToken;
 import com.slyszmarta.bemygoods.security.registration.VerificationTokenRepository;
 import com.slyszmarta.bemygoods.security.registration.roles.RoleRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -8,18 +8,6 @@ group = 'com.slyszmarta'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '13'
 
-jar {
-    manifest {
-        attributes "Main-Class": "com.slyszmarta.bemygoods.BeMyGoodsApplication"
-    }
-
-    from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    enabled=true
-}
-
-
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -40,7 +28,6 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     compile 'org.springframework.boot:spring-boot-starter-mail'
-    compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: '2.2.5.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-tomcat'
     implementation 'com.github.javafaker:javafaker:1.0.2'
     implementation 'org.passay:passay:1.5.0'
