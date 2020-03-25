@@ -4,22 +4,23 @@ import com.slyszmarta.bemygoods.exceptions.InvalidOldPasswordException;
 import com.slyszmarta.bemygoods.user.ApplicationUser;
 import com.slyszmarta.bemygoods.user.ApplicationUserDto;
 import com.slyszmarta.bemygoods.user.ApplicationUserService;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -29,6 +30,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 @RestController
+@Api(value = "Registration")
 @Slf4j
 @RequiredArgsConstructor
 public class RegistrationController {
@@ -43,7 +45,15 @@ public class RegistrationController {
     private final MessageSource messages;
 
     @PostMapping("/user/registration")
-    public GenericResponse registerUserAccount(@Valid ApplicationUserDto accountDto, HttpServletRequest request) throws ValidationException {
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Register user account", response = GenericResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Registration succeed."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public GenericResponse registerUserAccount(@ApiParam(value = "User account information", required = true) @Valid ApplicationUserDto accountDto, @ApiIgnore HttpServletRequest request) throws ValidationException {
         log.debug("Registering user account with information: {}", accountDto);
         ApplicationUser registered = createUserAccount(accountDto);
         if (registered == null) {
@@ -54,7 +64,15 @@ public class RegistrationController {
     }
 
     @GetMapping("/registrationConfirm")
-    public String confirmRegistration(Locale locale, Model model, @RequestParam("token") String token) {
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Confirm user registration")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Confirmation succeed."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public String confirmRegistration(@ApiIgnore Locale locale, @ApiIgnore Model model, @ApiParam(value = "Registration token", required = true) @RequestParam("token") String token) {
         VerificationToken verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {
             String message = messages.getMessage("auth.message.invalidToken", null, locale);
@@ -76,7 +94,15 @@ public class RegistrationController {
     }
 
     @GetMapping("/user/resendRegistrationToken")
-    public GenericResponse resendRegistrationToken(HttpServletRequest request, @RequestParam("token") String existingToken) {
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Resend registration token")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Token resending succeed."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public GenericResponse resendRegistrationToken(@ApiIgnore HttpServletRequest request, @ApiParam(value = "Existing registration token", required = true) @RequestParam("token") String existingToken) {
         VerificationToken newToken = userService.generateNewVerificationToken(existingToken);
         ApplicationUser user = userService.getUser(newToken.getToken());
         String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
@@ -86,7 +112,16 @@ public class RegistrationController {
     }
 
     @PostMapping("/user/resetPassword")
-    public GenericResponse resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) {
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Reset password")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Password reset succeed."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public GenericResponse resetPassword(@ApiIgnore HttpServletRequest request, @ApiParam(value = "User email", required = true) @RequestParam("email") String userEmail) {
         ApplicationUser user = userService.getExistingUserByEmail(userEmail);
         String token = UUID.randomUUID().toString();
         userService.createPasswordResetTokenForUser(user, token);
@@ -95,8 +130,17 @@ public class RegistrationController {
     }
 
     @GetMapping("/user/changePassword")
-    public String showChangePasswordPage(Locale locale, Model model, @RequestParam("id") long id, @RequestParam("token") String token) {
-        String result = securityService.validatePasswordResetToken(id, token);
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Change password page")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Change password page loading succeed."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public String showChangePasswordPage(@ApiIgnore Locale locale, @ApiIgnore Model model, @ApiIgnore @AuthenticationPrincipal ApplicationUser user, @ApiParam(value = "Password reset token", required = true) @RequestParam("token") String token) {
+        String result = securityService.validatePasswordResetToken(user.getId(), token);
         if (result != null) {
             model.addAttribute("message", messages.getMessage("auth.message." + result, null, locale));
             return "redirect:/login?lang=" + locale.getLanguage();
@@ -105,22 +149,45 @@ public class RegistrationController {
     }
 
     @PostMapping("/user/savePassword")
-    public GenericResponse savePassword(Locale locale, @Valid PasswordDto passwordDto) {
-        ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Save password")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Password save succeed."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public GenericResponse savePassword(@ApiIgnore Locale locale, @ApiIgnore @AuthenticationPrincipal ApplicationUser user, @ApiParam(value = "Password object to save", required = true) @Valid PasswordDto passwordDto) {
         userService.changeUserPassword(user, passwordDto.getNewPassword());
         return new GenericResponse(messages.getMessage("message.resetPasswordSuc", null, locale));
     }
 
     @GetMapping("/user/registration")
-    public String showRegistrationForm(WebRequest request, Model model) {
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Show registration form")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Registration form loading succeed."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public String showRegistrationForm(@ApiIgnore WebRequest request, @ApiIgnore Model model) {
         ApplicationUserDto userDto = new ApplicationUserDto();
         model.addAttribute("user", userDto);
         return "registration";
     }
 
     @PostMapping("/user/updatePassword")
-    @PreAuthorize("hasRole('READ_PRIVILEGE')")
-    public GenericResponse changeUserPassword(Locale locale, @RequestParam("password") String password, @RequestParam("oldpassword") String oldPassword) {
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @ApiOperation(value = "Update password")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Password update succeed."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public GenericResponse changeUserPassword(@ApiIgnore Locale locale, @ApiParam(value = "New password", required = true) @RequestParam("password") String password, @ApiParam(value = "Old password", required = true) @RequestParam("oldpassword") String oldPassword) {
         ApplicationUser user = userService.getExistingUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         if (!userService.checkIfValidOldPassword(user, oldPassword)) {
             throw new InvalidOldPasswordException();

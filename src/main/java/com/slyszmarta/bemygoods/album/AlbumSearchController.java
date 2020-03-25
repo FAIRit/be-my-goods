@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/albums/search")
-@Api(value = "albums searching")
+@Api(value = "Albums searching")
 public class AlbumSearchController {
 
     private final LastFmApiService lastFmApiService;

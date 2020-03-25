@@ -42,7 +42,7 @@ public class AlbumService {
         return albumToSave;
     }
 
-    public void deleteUsersAlbum(Long userId, Long albumId) {
+    public void deleteUserAlbum(Long userId, Long albumId) {
         var albumToFind = getExistingAlbumById(albumId);
         if (albumToFind.getUser().getId().equals(userId)) {
             albumRepository.deleteById(albumId);
@@ -51,7 +51,7 @@ public class AlbumService {
         }
     }
 
-    public void deleteAllUsersAlbum(Long usersId) {
+    public void deleteAllUserAlbum(Long usersId) {
         albumRepository.deleteAllByUserId(usersId);
     }
 

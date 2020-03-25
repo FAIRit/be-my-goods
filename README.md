@@ -89,6 +89,8 @@ https://www.youtube.com/watch?v=gduKpLW_vdY
 
 https://www.youtube.com/watch?v=8s9I1G4tXhA
 
+https://github.com/swagger-api/swagger-core/wiki/Annotations
+
 https://sztukakodu.pl/jak-definiowac-kody-http-odpowiedzi-w-springu/
 
 https://github.com/Baeldung/spring-security-registration - and linked tutorials
