@@ -1,9 +1,7 @@
 package com.slyszmarta.bemygoods.avatar;
 
 import com.slyszmarta.bemygoods.user.ApplicationUser;
-import com.slyszmarta.bemygoods.user.ApplicationUserService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
@@ -13,23 +11,30 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
 @RestController
+@Api(value = "Avatar")
 @RequestMapping("/user/myprofile/avatar")
 @RequiredArgsConstructor
 public class AvatarController {
 
-    private AvatarService avatarService;
-    private ApplicationUserService userService;
+    private final AvatarService avatarService;
 
-    @GetMapping()
+    @GetMapping
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get your avatar", response = ResponseEntity.class)
-    public ResponseEntity<ByteArrayResource> downloadFile(@AuthenticationPrincipal ApplicationUser user) {
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Avatar successfully retrieved."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public ResponseEntity<ByteArrayResource> downloadFile(@ApiIgnore @AuthenticationPrincipal ApplicationUser user) {
         var avatar = avatarService.getFile(user.getId());
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(avatar.getFileType()))
@@ -40,15 +45,27 @@ public class AvatarController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Upload your avatar file")
-    public ResponseEntity uploadFile(@ApiParam(value = "Avatar file to save or update") @RequestParam("file") MultipartFile file, @AuthenticationPrincipal ApplicationUser user) throws URISyntaxException {
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Avatar successfully uploaded."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public ResponseEntity uploadFile(@ApiParam(value = "Avatar file to save or update", required = true) @RequestParam("file") MultipartFile file, @ApiIgnore @AuthenticationPrincipal ApplicationUser user) throws URISyntaxException {
         return ResponseEntity.created(new URI("/upload")).body(avatarService.storeFile(file, user));
     }
 
-    @PostMapping()
+    @DeleteMapping
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete your avatar file")
-    public void deleteFile(@AuthenticationPrincipal ApplicationUser user){
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Avatar successfully deleted."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public void deleteFile(@ApiIgnore @AuthenticationPrincipal ApplicationUser user){
         avatarService.deleteUserAvatar(user.getId());
     }
 }

@@ -1,15 +1,18 @@
 package com.slyszmarta.bemygoods.album;
 
 import com.slyszmarta.bemygoods.user.ApplicationUser;
+import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@Api(value = "Albums")
 @RestController
 @RequestMapping("/albums")
 public class AlbumController {
@@ -23,38 +26,84 @@ public class AlbumController {
     @GetMapping
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity getAllUsersAlbums(@AuthenticationPrincipal ApplicationUser user) {
+    @ApiOperation(value = "Get an object containing a list of all your albums.", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Albums successfully retrieved."),
+            @ApiResponse(code = 401, message = "You are not authorized to access these resources."),
+            @ApiResponse(code = 403, message = "Resources you were trying to reach are forbidden."),
+            @ApiResponse(code = 404, message = "Resources you were trying to reach are not found.")
+    })
+    public ResponseEntity getAllUsersAlbums(@ApiIgnore @AuthenticationPrincipal ApplicationUser user) {
         return ResponseEntity.ok(albumService.getAllUserAlbums(user.getId()));
     }
 
     @GetMapping("/{tag}")
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity getAllTagAlbums(@AuthenticationPrincipal ApplicationUser user, String tag){
+    @ApiOperation(value = "Get an object containing a list of all your albums under specified tag.", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Albums successfully retrieved."),
+            @ApiResponse(code = 401, message = "You are not authorized to access these resources."),
+            @ApiResponse(code = 403, message = "Resources you were trying to reach are forbidden."),
+            @ApiResponse(code = 404, message = "Resources you were trying to reach are not found.")
+    })
+    public ResponseEntity getAllTagAlbums(@ApiIgnore @AuthenticationPrincipal ApplicationUser user, @ApiParam(value = "Specified tag", required = true) @PathVariable String tag){
         return ResponseEntity.ok(albumService.getAllTagAlbums(user.getId(), tag));
     }
 
     @GetMapping("/{albumId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity getAlbumById(@PathVariable Long albumId) {
+    @ApiOperation(value = "Get an album of specified id.", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Album successfully retrieved."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public ResponseEntity getAlbumById(@ApiParam(value = "Album id", required = true) @PathVariable Long albumId) {
         return ResponseEntity.ok(AlbumMapper.INSTANCE.map(albumService.getExistingAlbumById(albumId)));
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity addAlbum(@RequestBody  AlbumDto dto, @AuthenticationPrincipal ApplicationUser user) throws URISyntaxException {
+    @ApiOperation(value = "Upload an album.", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Album successfully uploaded."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public ResponseEntity addAlbum(@ApiParam(value = "Album to add", required = true) @RequestBody AlbumDto dto, @ApiIgnore @AuthenticationPrincipal ApplicationUser user) throws URISyntaxException {
         return ResponseEntity.created(new URI("/albums/{albumId}")).body(albumService.saveAlbum(dto, user.getId()));
     }
 
     @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAllUsersAlbums(@AuthenticationPrincipal ApplicationUser user) {
-        albumService.deleteAllUsersAlbum(user.getId());
+    @ApiOperation(value = "Delete all your albums.", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Albums successfully deleted."),
+            @ApiResponse(code = 401, message = "You are not authorized to access these resources."),
+            @ApiResponse(code = 403, message = "Resources you were trying to reach are forbidden."),
+            @ApiResponse(code = 404, message = "Resources you were trying to reach are not found.")
+    })
+    public void deleteAllUsersAlbums(@ApiIgnore @AuthenticationPrincipal ApplicationUser user) {
+        albumService.deleteAllUserAlbum(user.getId());
     }
 
     @DeleteMapping("/{albumId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAlbum(@AuthenticationPrincipal ApplicationUser user, @PathVariable Long albumId) {
-        albumService.deleteUsersAlbum(user.getId(), albumId);
+    @ApiOperation(value = "Delete an album of specified id.", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Album successfully deleted."),
+            @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
+            @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
+            @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
+    })
+    public void deleteAlbum(@ApiIgnore @AuthenticationPrincipal ApplicationUser user, @ApiParam(value = "Album id") @PathVariable Long albumId) {
+        albumService.deleteUserAlbum(user.getId(), albumId);
     }
 }
