@@ -29,6 +29,7 @@ public class Album {
     @Column(name = "name")
     private String name;
 
+    @NotNull
     @Column(name = "artist")
     private String artist;
 

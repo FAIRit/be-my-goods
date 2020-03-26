@@ -4,6 +4,9 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
+/src/main/resources/application-development.properties
+/src/main/resources/application.properties
+/src/main/resources/db/migration/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -63,5 +66,3 @@ out/
 
 ### VS Code ###
 .vscode/
-/src/main/resources/application-development.properties
-/src/main/resources/application.properties

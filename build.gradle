@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.2.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
+    id "org.flywaydb.flyway" version "6.3.2"
 }
 
 group = 'com.slyszmarta'
@@ -18,26 +19,29 @@ repositories {
     mavenCentral()
 }
 
+flyway {
+    url = ''
+    user = ''
+    password = ''
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    compile 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    compile 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-tomcat'
     implementation 'com.github.javafaker:javafaker:1.0.2'
-    implementation 'org.passay:passay:1.5.0'
     compileOnly 'org.projectlombok:lombok'
-    implementation "com.auth0:java-jwt:3.4.0"
+    annotationProcessor 'org.projectlombok:lombok'
     compile 'org.mapstruct:mapstruct:1.3.1.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.3.1.Final'
+    implementation 'org.passay:passay:1.5.0'
+    implementation "com.auth0:java-jwt:3.4.0"
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     runtimeOnly 'org.postgresql:postgresql'
-    annotationProcessor 'org.projectlombok:lombok'
+    compile group: 'org.flywaydb', name: 'flyway-core', version: '6.3.2'
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -46,6 +50,8 @@ dependencies {
     testCompile 'org.assertj:assertj-core'
     testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'
     testImplementation 'org.springframework.security:spring-security-test'
+    testCompile group: 'org.testcontainers', name: 'testcontainers', version: '1.13.0'
+    testCompile group: 'org.testcontainers', name: 'postgresql', version: '1.13.0'
 }
 
 test {
