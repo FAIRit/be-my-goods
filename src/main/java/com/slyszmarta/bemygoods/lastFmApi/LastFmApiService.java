@@ -28,6 +28,12 @@ public class LastFmApiService implements AlbumService {
         return entity.getBody() != null ? new Albums(entity.getBody().getAlbums()) : new Albums(Collections.emptyList());
     }
 
+    public Albums searchAlbums(String musicbrainzId){
+        String fullPath = getFullPath(musicbrainzId);
+        ResponseEntity<Albums> entity = restTemplate.getForEntity(fullPath, Albums.class);
+        return entity.getBody() != null ? new Albums(entity.getBody().getAlbums()) : new Albums(Collections.emptyList());
+    }
+
     private String getFullPath(String artist, String title) {
         StringBuilder fullPath = new StringBuilder();
         fullPath.append(baseApiUrl);
@@ -37,6 +43,17 @@ public class LastFmApiService implements AlbumService {
         fullPath.append(artist.replaceAll(" ", "%20"));
         fullPath.append("&album=");
         fullPath.append(title.replaceAll(" ", "%20"));
+        fullPath.append("&format=json");
+        return fullPath.toString();
+    }
+
+    private String getFullPath(String musicbrainzId){
+        StringBuilder fullPath = new StringBuilder();
+        fullPath.append(baseApiUrl);
+        fullPath.append("/2.0/?method=album.getinfo&api_key=");
+        fullPath.append(apiKey);
+        fullPath.append("&mbid=");
+        fullPath.append(musicbrainzId);
         fullPath.append("&format=json");
         return fullPath.toString();
     }

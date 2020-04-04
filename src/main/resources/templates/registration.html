@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{page.registrationForm}"></title>
+    <div th:replace="fragments:: head"></div>
+</head>
+<body>
+<div th:replace="fragments:: header"></div>
+
+<h1 th:text="#{page.registrationForm}"></h1>
+<form class="ui form" th:action="@{/auth/register}" method="post">
+    <div class="field">
+        <label th:text="#{page.user.username}"></label>
+        <input type="text" name="username" th:placeholder="#{page.user.username}">
+    </div>
+    <div class="field">
+            <label th:text="#{page.user.email}"></label>
+            <input type="email" name="email" th:placeholder="#{page.user.email}">
+    </div>
+    <div class="field">
+            <label th:text="#{page.user.password}"></label>
+            <input type="text" name="password" th:placeholder="#{page.user.password}">
+    </div>
+    <div class="field">
+        <label th:text="#{page.user.confirmPassword}"></label>
+        <input type="text" name="matchingPassword" th:placeholder="#{page.user.confirmPassword}">
+    </div>
+    <button class="ui button" type="submit">Submit</button>
+</form>
+</body>
+</html>

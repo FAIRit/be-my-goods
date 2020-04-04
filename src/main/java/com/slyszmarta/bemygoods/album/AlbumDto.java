@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class AlbumDto {
 
-    private Long id;
+    private String mbid;
 
     private String name;
 

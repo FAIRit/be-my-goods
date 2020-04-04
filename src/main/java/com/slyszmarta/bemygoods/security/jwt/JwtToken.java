@@ -14,9 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class JwtToken implements Serializable {
-
-    private static final long serialVersionUID = -2550185165626007488L;
+public class JwtToken {
 
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 

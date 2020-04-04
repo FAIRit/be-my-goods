@@ -1,4 +1,4 @@
-package com.slyszmarta.bemygoods.security.registration.validation;
+package com.slyszmarta.bemygoods.security.user;
 
 import com.slyszmarta.bemygoods.user.ApplicationUserDto;
 
@@ -10,9 +10,10 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
     @Override
     public void initialize(PasswordMatches constraintAnnotation) {
     }
+
     @Override
-    public boolean isValid(Object obj, ConstraintValidatorContext context){
-        var user = (ApplicationUserDto) obj;
-        return user.getPassword().equals(user.getMatchingPassword());
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
+        ApplicationUserDto userDto = (ApplicationUserDto) value;
+        return userDto.getPassword().equals(userDto.getMatchingPassword());
     }
 }

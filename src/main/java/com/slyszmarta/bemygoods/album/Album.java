@@ -25,6 +25,9 @@ public class Album {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
+    @Column(name = "musicbrainz_id")
+    private String mbid;
+
     @NotNull
     @Column(name = "name")
     private String name;

@@ -2,58 +2,31 @@ package com.slyszmarta.bemygoods.security.user;
 
 import com.slyszmarta.bemygoods.security.jwt.JwtRequest;
 import com.slyszmarta.bemygoods.security.jwt.JwtResponse;
-import com.slyszmarta.bemygoods.security.jwt.JwtToken;
-import com.slyszmarta.bemygoods.user.ApplicationUserService;
+import com.slyszmarta.bemygoods.user.ApplicationUserDto;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
-@CrossOrigin
 @Api(value = "Authentication")
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtToken jwtToken;
-    private final ApplicationUserService applicationUserService;
+    private final AuthService authService;
 
-
-    @PostMapping(value = "/authenticate")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Authenticate", response = ResponseEntity.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully authenticated."),
-            @ApiResponse(code = 201, message = ""),
-            @ApiResponse(code = 401, message = ""),
-            @ApiResponse(code = 403, message = ""),
-            @ApiResponse(code = 404, message = "")
-    })
-    public ResponseEntity createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        final UserDetails userDetails = applicationUserService.loadUserByUsername(authenticationRequest.getUsername());
-        final String token = jwtToken.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token));
+    @PostMapping(value = "/auth/login", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public JwtResponse login(@Valid JwtRequest jwtRequest) throws Exception {
+        return authService.createAuthenticationToken(jwtRequest);
     }
 
-    private void authenticate(String username, String password) throws Exception {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
+    @PostMapping(value = "/auth/register", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public String register(@Valid ApplicationUserDto applicationUserDto) throws Exception {
+        authService.registerUser(applicationUserDto);
+        return "User registered!";
     }
 }
 
