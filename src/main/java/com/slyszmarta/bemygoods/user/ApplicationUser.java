@@ -14,15 +14,13 @@ import java.util.List;
 import java.util.Set;
 
 @Data
-@Entity
+@Entity(name = "users")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
 public class ApplicationUser {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

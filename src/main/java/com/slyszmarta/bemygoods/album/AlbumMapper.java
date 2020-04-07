@@ -9,6 +9,7 @@ public interface AlbumMapper {
 
     AlbumMapper INSTANCE = Mappers.getMapper(AlbumMapper.class);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "albumTags", ignore = true)
     Album map(AlbumDto dto);
 

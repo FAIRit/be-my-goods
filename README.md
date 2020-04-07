@@ -33,25 +33,7 @@ The app will allow logged users to store their music CDs collection. CDs can be 
 ## Used API
 * [Last.fm API](https://www.last.fm/api/)
 
-## Setup
-
-### Using Gradle, JAVA and PostgreSQL
-In application-production.properties please insert your datasource credentials (username, password and URL) - both in datasource and flyway sections, API key and JWT secret.
-In build.gradle remember to insert your database credentials in flyway section (username, password and URL).
-
-Build application
-```
-$ gradle clean build
-```
-Run application
-```
-$ java -jar -Dspring.profiles.active=production build/libs/*.jar 
-```
-
-### Using Docker and docker-compose
-In application-production.properties please insert your datasource credentials (username, password and URL) - both in datasource and flyway sections, API key and JWT secret.
-In build.gradle remember to insert your database credentials in flyway section (username, password and URL).
-In docker-compose.yml please insert your datasource credentials (DB, user, password and URL).
+## Setup using Docker and docker-compose
 
 Build application
 ```
@@ -70,10 +52,9 @@ jar -xf ../libs/*.jar
 
 Run with docker-compose
 ```
-docker-compose build
+docker-compose --build-arg LASTFM_API_KEY=YOUR_KEY --build-arg JWT_SECRET=YOUR_SECRET
 docker-compose up
 ```
-
 
 ## Features
 Work in progress.

@@ -10,10 +10,10 @@ import java.util.Collections;
 
 @Component
 public class LastFmApiService implements AlbumService {
-    @Value("${last^fm.api-url}")
+    @Value("${LASTFM_API_URL}")
     private String baseApiUrl;
 
-    @Value("${last^fm.api-key}")
+    @Value("${LASTFM_API_KEY}")
     private String apiKey;
 
     private final RestTemplate restTemplate;

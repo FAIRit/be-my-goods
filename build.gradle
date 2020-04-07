@@ -20,9 +20,9 @@ repositories {
 }
 
 flyway {
-    url = ''
-    user = ''
-    password = ''
+    url = 'jdbc:postgresql://localhost:5432/mygoods'
+    user = 'postgres'
+    password = 'root'
 }
 
 dependencies {

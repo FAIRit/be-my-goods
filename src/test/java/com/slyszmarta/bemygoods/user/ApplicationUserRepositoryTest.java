@@ -24,12 +24,12 @@ public class ApplicationUserRepositoryTest {
     public ApplicationUser given(){
         var faker = new Faker();
         ApplicationUser user = ApplicationUser.builder()
-                .id(faker.number().randomNumber())
                 .username(faker.name().firstName())
                 .password(faker.animal().name())
-                .country(faker.country().name())
                 .email(faker.internet().emailAddress())
+                .country(faker.country().name())
                 .albumList(Collections.emptyList())
+                .albumTags(Collections.emptySet())
                 .build();
         return user;
     }
@@ -54,18 +54,6 @@ public class ApplicationUserRepositoryTest {
         entityManager.flush();
         // when
         Optional<ApplicationUser> found = applicationUserRepository.findUserByEmail((user.getEmail()));
-        // then
-        assertThat(found.get().getUsername()).isEqualTo(user.getUsername());
-    }
-
-    @Test
-    public void whenFindById_thenReturnUser() {
-        //given
-        var user = given();
-        entityManager.merge(user);
-        entityManager.flush();
-        // when
-        Optional<ApplicationUser> found = applicationUserRepository.findUserById((user.getId()));
         // then
         assertThat(found.get().getUsername()).isEqualTo(user.getUsername());
     }
