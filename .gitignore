@@ -6,7 +6,6 @@ build/
 !**/src/test/**
 /src/main/resources/application-development.properties
 /src/main/resources/application.properties
-/src/main/resources/db/migration/
 Dockerfile_development
 
 # Ignore Gradle GUI config
