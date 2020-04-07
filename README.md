@@ -52,7 +52,7 @@ jar -xf ../libs/*.jar
 
 Run with docker-compose
 ```
-docker-compose --build-arg LASTFM_API_KEY=YOUR_KEY --build-arg JWT_SECRET=YOUR_SECRET
+docker-compose build --build-arg LASTFM_API_KEY=YOUR_KEY --build-arg JWT_SECRET=YOUR_SECRET
 docker-compose up
 ```
 

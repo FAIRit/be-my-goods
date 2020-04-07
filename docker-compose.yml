@@ -10,7 +10,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile_production
     ports:
       - "8082:8080"
     environment:
