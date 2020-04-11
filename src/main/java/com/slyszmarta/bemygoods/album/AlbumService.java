@@ -2,6 +2,7 @@ package com.slyszmarta.bemygoods.album;
 
 import com.slyszmarta.bemygoods.album.track.TrackMapper;
 import com.slyszmarta.bemygoods.album.track.TrackService;
+import com.slyszmarta.bemygoods.exceptions.AlbumNotFoundException;
 import com.slyszmarta.bemygoods.user.ApplicationUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -42,11 +43,11 @@ public class AlbumService {
     }
 
     public void deleteUserAlbum(Long userId, Long albumId) {
-        var albumToDelete = albumRepository.findById(albumId);
-        if (!albumToDelete.get().getId().equals(userId)){
+        var albumToDelete = getAlbumById(albumId);
+        if (!albumToDelete.getId().equals(userId)){
             throw new AccessDeniedException("You don't have permission to delete this resource.");
         }
-        albumRepository.delete(albumToDelete.get());
+        albumRepository.delete(albumToDelete);
     }
 
     public void deleteAllUserAlbum(Long userId) {
@@ -54,14 +55,15 @@ public class AlbumService {
     }
 
     public AlbumDto getExistingAlbumByUserIdAndAlbumId(Long userId, Long albumId) {
-        var albumToFind = albumRepository.findById(albumId);
-        if (!albumToFind.get().getId().equals(userId)){
+        var albumToFind = getAlbumById(albumId);
+        if (!albumToFind.getId().equals(userId)){
             throw new AccessDeniedException("You don't have permission to delete this resource.");
         }
-        return AlbumMapper.INSTANCE.map(albumToFind.get());
+        return AlbumMapper.INSTANCE.map(albumToFind);
     }
 
-    public AlbumDto getExistingAlbumByAlbumId(Long albumId) {
-        return AlbumMapper.INSTANCE.map(albumRepository.findById(albumId).get());
+    public Album getAlbumById(Long id){
+        return albumRepository.findById(id).orElseThrow(() -> new AlbumNotFoundException(id));
     }
+
 }

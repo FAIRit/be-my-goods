@@ -23,7 +23,7 @@ public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "album_id", updatable = false, nullable = false)
     private Long id;
 
     @Column(name = "musicbrainz_id")
@@ -42,7 +42,7 @@ public class Album {
     private ApplicationUser user;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "albums_tags", joinColumns = @JoinColumn(name = "album_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tags_id", referencedColumnName = "id"))
+    @JoinTable(name = "albums_tags",joinColumns = {@JoinColumn(name = "album_id")}, inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     private Set<AlbumTag> albumTags = new HashSet<>();
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)

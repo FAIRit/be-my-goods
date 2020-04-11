@@ -11,7 +11,6 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @Data
 @Entity(name = "tags")
 @Builder
@@ -20,10 +19,11 @@ import java.util.Set;
 public class AlbumTag {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "tag_id", updatable = false, nullable = false)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
     @ManyToMany(mappedBy = "albumTags")

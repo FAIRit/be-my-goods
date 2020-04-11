@@ -46,7 +46,7 @@ public class AlbumTagController {
             @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
     })
     public ResponseEntity getAlbumTagById(@ApiParam(value = "Album tag id", required = true) @PathVariable Long tagId, @ApiIgnore @LoggedInUser ApplicationUserDetails user) {
-        return ResponseEntity.ok((albumTagService.getExistingAlbumTagByUserIdAndTagId(user.getId(), tagId)));
+        return ResponseEntity.ok((albumTagService.getAlbumTagById(user.getId(), tagId)));
     }
 
     @PostMapping

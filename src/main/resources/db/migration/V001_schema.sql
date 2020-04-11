@@ -3,7 +3,6 @@ CREATE TABLE albums (
     artist VARCHAR(255) NOT NULL,
     musicbrainz_id VARCHAR(255),
     name VARCHAR(255) NOT NULL,
-    release_date DATE,
     user_id INT8,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id)
@@ -11,16 +10,18 @@ CREATE TABLE albums (
 
 CREATE TABLE albums_tags (
     album_id INT8 NOT NULL,
-    tags_id INT8 NOT NULL,
-    PRIMARY KEY (album_id, tags_id),
-    FOREIGN KEY (tags_id) REFERENCES album_tags,
+    tag_id INT8 NOT NULL,
+    PRIMARY KEY (album_id, tag_id),
+    FOREIGN KEY (tag_id) REFERENCES tags,
     FOREIGN KEY (album_id) REFERENCES albums
 );
 
-CREATE TABLE album_tags (
-    id INT8 NOT NULL,
+CREATE TABLE tags (
+    id BIGSERIAL NOT NULL,
     name VARCHAR(255),
-    PRIMARY KEY (id)
+    user_id INT8,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users
 );
 
 CREATE TABLE avatars (
@@ -47,12 +48,4 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
-);
-
-CREATE TABLE users_tags (
-    user_id INT8 NOT NULL,
-    tags_id INT8 NOT NULL,
-    PRIMARY KEY (user_id, tags_id),
-    FOREIGN KEY (tags_id) REFERENCES users,
-    FOREIGN KEY (user_id) REFERENCES album_tags
 );
