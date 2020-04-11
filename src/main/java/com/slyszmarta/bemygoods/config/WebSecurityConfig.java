@@ -19,13 +19,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ApplicationUserService applicationUserService;
     private final JwtRequestFilter jwtRequestFilter;
+
+    String[] pathArray = new String[]{"/auth/**", "/v2/api-docs", "/configuration/ui","/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**"};
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -46,9 +47,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.csrf().disable()
-                .authorizeRequests().antMatchers("/auth/**").permitAll()
+        httpSecurity
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers(pathArray).permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .cors()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPointBean())
                 .and()

@@ -1,7 +1,9 @@
-package com.slyszmarta.bemygoods.album;
+package com.slyszmarta.bemygoods.album.tag;
 
+import com.slyszmarta.bemygoods.album.Album;
 import com.slyszmarta.bemygoods.user.ApplicationUser;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,10 +11,12 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+
+@Data
+@Entity(name = "tags")
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Entity(name = "albumTags")
 public class AlbumTag {
 
     @Id
@@ -25,7 +29,7 @@ public class AlbumTag {
     @ManyToMany(mappedBy = "albumTags")
     private Set<Album> albums = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "users_tags", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tags_id", referencedColumnName = "id"))
-    private Set<ApplicationUser> users = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private ApplicationUser user;
 }

@@ -47,16 +47,6 @@ public class SwaggerConfig extends WebSecurityConfigurerAdapter implements WebMv
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-            web.ignoring().antMatchers("/v2/api-docs",
-                    "/configuration/ui",
-                    "/swagger-resources/**",
-                    "/configuration/security",
-                    "/swagger-ui.html",
-                    "/webjars/**");
-    }
-
-    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
             registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
             registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");

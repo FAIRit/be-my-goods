@@ -1,5 +1,6 @@
 package com.slyszmarta.bemygoods.user;
 
+import com.slyszmarta.bemygoods.security.user.ApplicationUserDetails;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -20,4 +21,6 @@ public interface ApplicationUserMapper {
 
     @Mapping(target = "matchingPassword", ignore = true)
     ApplicationUserDto map(ApplicationUser user);
+
+    ApplicationUserDto map(ApplicationUserDetails user);
 }

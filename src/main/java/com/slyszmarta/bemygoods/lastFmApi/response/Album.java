@@ -1,20 +1,20 @@
-package com.slyszmarta.bemygoods.album;
+package com.slyszmarta.bemygoods.lastFmApi.response;
 
-import com.slyszmarta.bemygoods.lastFmApi.response.Tracks;
-import com.slyszmarta.bemygoods.lastFmApi.response.Wiki;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AlbumDto {
-    private String mbid;
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Album {
     private String name;
     private String artist;
+    private String mbid;
     private Tracks tracks;
     private Wiki wiki;
 }

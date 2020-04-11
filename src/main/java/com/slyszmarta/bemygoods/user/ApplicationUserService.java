@@ -1,19 +1,16 @@
 package com.slyszmarta.bemygoods.user;
 
 import com.slyszmarta.bemygoods.exceptions.UserNotFoundException;
+import com.slyszmarta.bemygoods.security.user.ApplicationUserDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.xml.bind.ValidationException;
-import java.util.Collections;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -23,7 +20,6 @@ public class ApplicationUserService implements UserDetailsService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ApplicationUserRepository applicationUserRepository;
 
-    @PostMapping("/user")
     public ApplicationUser create(ApplicationUserDto applicationUserDto) throws ValidationException {
         ApplicationUser entity = new ApplicationUser();
         entity.setUsername(applicationUserDto.getUsername());
@@ -54,11 +50,10 @@ public class ApplicationUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<ApplicationUser> user = applicationUserRepository.findUserByEmail(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        return new User(user.get().getUsername(), user.get().getPassword(), Collections.emptyList());
+        var user = applicationUserRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+        return new ApplicationUserDetails(user);
     }
+
 }
+
 

@@ -1,12 +1,13 @@
 package com.slyszmarta.bemygoods.user;
 
 import com.slyszmarta.bemygoods.album.Album;
-import com.slyszmarta.bemygoods.album.AlbumTag;
+import com.slyszmarta.bemygoods.album.tag.AlbumTag;
 import com.slyszmarta.bemygoods.avatar.Avatar;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -42,6 +43,9 @@ public class ApplicationUser {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Avatar avatar;
 
-    @ManyToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<AlbumTag> albumTags = new HashSet<>();
+
+    @Transient
+    private List<SimpleGrantedAuthority> authorities;
 }

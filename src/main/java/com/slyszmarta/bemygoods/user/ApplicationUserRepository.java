@@ -11,8 +11,6 @@ public interface ApplicationUserRepository extends JpaRepository<ApplicationUser
 
     List<ApplicationUser> findAll();
 
-    Optional<ApplicationUser> findUserByEmail(String email);
-
     boolean existsByEmail(String email);
 
     boolean existsByUsername(String username);

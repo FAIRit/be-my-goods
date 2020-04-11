@@ -23,8 +23,8 @@ import static java.util.Objects.nonNull;
 @RequiredArgsConstructor
 public class AvatarService {
 
-    private AvatarRepository avatarRepository;
-    private ApplicationUserRepository userRepository;
+    private final AvatarRepository avatarRepository;
+    private final ApplicationUserRepository userRepository;
 
     public Avatar storeFile(MultipartFile file, ApplicationUser user) {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));

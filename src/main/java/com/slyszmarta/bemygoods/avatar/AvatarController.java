@@ -1,6 +1,9 @@
 package com.slyszmarta.bemygoods.avatar;
 
+import com.slyszmarta.bemygoods.security.user.ApplicationUserDetails;
+import com.slyszmarta.bemygoods.security.user.LoggedInUser;
 import com.slyszmarta.bemygoods.user.ApplicationUser;
+import com.slyszmarta.bemygoods.user.ApplicationUserService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -23,6 +26,7 @@ import java.net.URISyntaxException;
 public class AvatarController {
 
     private final AvatarService avatarService;
+    private final ApplicationUserService applicationUserService;
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -34,7 +38,7 @@ public class AvatarController {
             @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
             @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
     })
-    public ResponseEntity<ByteArrayResource> downloadFile(@ApiIgnore @AuthenticationPrincipal ApplicationUser user) {
+    public ResponseEntity<ByteArrayResource> downloadFile(@ApiIgnore @LoggedInUser ApplicationUserDetails user) {
         var avatar = avatarService.getFile(user.getId());
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(avatar.getFileType()))
@@ -51,8 +55,9 @@ public class AvatarController {
             @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
             @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
     })
-    public ResponseEntity uploadFile(@ApiParam(value = "Avatar file to save or update", required = true) @RequestParam("file") MultipartFile file, @ApiIgnore @AuthenticationPrincipal ApplicationUser user) throws URISyntaxException {
-        return ResponseEntity.created(new URI("/upload")).body(avatarService.storeFile(file, user));
+    public ResponseEntity uploadFile(@ApiParam(value = "Avatar file to save or update", required = true) @RequestParam("file") MultipartFile file, @ApiIgnore @LoggedInUser ApplicationUserDetails user) throws URISyntaxException {
+        var uploadingUser = applicationUserService.getExistingUser(user.getId());
+        return ResponseEntity.created(new URI("/upload")).body(avatarService.storeFile(file, uploadingUser));
     }
 
     @DeleteMapping
@@ -65,7 +70,8 @@ public class AvatarController {
             @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
             @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
     })
-    public void deleteFile(@ApiIgnore @AuthenticationPrincipal ApplicationUser user){
-        avatarService.deleteUserAvatar(user.getId());
+    public void deleteFile(@ApiIgnore @LoggedInUser ApplicationUserDetails user){
+        var deletingUser = applicationUserService.getExistingUser(user.getId());
+        avatarService.deleteUserAvatar(deletingUser.getId());
     }
 }
