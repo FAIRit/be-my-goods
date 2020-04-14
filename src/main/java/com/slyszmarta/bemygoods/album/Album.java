@@ -3,10 +3,7 @@ package com.slyszmarta.bemygoods.album;
 import com.slyszmarta.bemygoods.album.tag.AlbumTag;
 import com.slyszmarta.bemygoods.album.track.Track;
 import com.slyszmarta.bemygoods.user.ApplicationUser;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -15,7 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "albums")
 @Builder
 @AllArgsConstructor

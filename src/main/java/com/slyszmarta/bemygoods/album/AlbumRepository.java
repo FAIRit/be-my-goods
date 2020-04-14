@@ -9,5 +9,5 @@ import java.util.List;
 public interface AlbumRepository extends JpaRepository<Album, Long> {
     List<Album> findAllByUserId(Long id);
     void deleteAllByUserId(Long id);
-    List<Album> findByUserIdAndAlbumTags(Long id, String tag);
+    Album findByIdAndUserId (Long id, Long userId);
 }

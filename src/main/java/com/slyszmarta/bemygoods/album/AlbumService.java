@@ -1,12 +1,10 @@
 package com.slyszmarta.bemygoods.album;
 
 import com.google.gson.Gson;
-import com.slyszmarta.bemygoods.exceptions.AlbumNotFoundException;
 import com.slyszmarta.bemygoods.lastFmApi.response.AlbumResponse;
 import com.slyszmarta.bemygoods.lastFmApi.response.Track;
 import com.slyszmarta.bemygoods.user.ApplicationUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,13 +28,7 @@ public class AlbumService {
                 .collect(Collectors.toList()));
     }
 
-    public Albums getAllTagAlbums(Long userId, String tag) {
-        return new Albums(albumRepository.findByUserIdAndAlbumTags(userId, tag).stream()
-                .map(AlbumMapper.INSTANCE::mapAlbumToDto)
-                .collect(Collectors.toList()));
-    }
-
-    public AlbumDto saveAlbum(AlbumResponse albumResponse, Long userId) {
+    public AlbumDto saveAlbum(AlbumResponse albumResponse, Long userId) throws NoSuchFieldException {
         var user = userService.getExistingUser(userId);
         var albumToSave = AlbumMapper.INSTANCE.mapResponseToAlbum(albumResponse);
         albumToSave.setUser(user);
@@ -51,10 +43,7 @@ public class AlbumService {
     }
 
     public void deleteUserAlbum(Long userId, Long albumId) {
-        var albumToDelete = getAlbumById(albumId);
-        if (!albumToDelete.getId().equals(userId)) {
-            throw new AccessDeniedException("You don't have permission to delete this resource.");
-        }
+        var albumToDelete = getAlbumByIdAndUserId(albumId, userId);
         albumRepository.delete(albumToDelete);
     }
 
@@ -63,15 +52,12 @@ public class AlbumService {
     }
 
     public AlbumDto getExistingAlbumByUserIdAndAlbumId(Long userId, Long albumId) {
-        var albumToFind = getAlbumById(albumId);
-        if (!albumToFind.getId().equals(userId)) {
-            throw new AccessDeniedException("You don't have permission to delete this resource.");
-        }
+        var albumToFind = getAlbumByIdAndUserId(albumId, userId);
         return AlbumMapper.INSTANCE.mapAlbumToDto(albumToFind);
     }
 
-    public Album getAlbumById(Long id) {
-        return albumRepository.findById(id).orElseThrow(() -> new AlbumNotFoundException(id));
+    public Album getAlbumByIdAndUserId(Long id, Long userId) {
+        return albumRepository.findByIdAndUserId(id, userId);
     }
 
     private List<com.slyszmarta.bemygoods.album.track.Track> updateAlbumOnTrackList(Album album, List<com.slyszmarta.bemygoods.album.track.Track> trackList) {
@@ -82,7 +68,7 @@ public class AlbumService {
         return trackList;
     }
 
-    private List<com.slyszmarta.bemygoods.album.track.Track> getAlbumTracksFromJson(AlbumResponse albumResponse) {
+    private List<com.slyszmarta.bemygoods.album.track.Track> getAlbumTracksFromJson(AlbumResponse albumResponse) throws NoSuchFieldException {
         String jsonString = gson.toJson(albumResponse);
         AlbumResponse response = gson.fromJson(jsonString, AlbumResponse.class);
         List<Track> trackList = response.getTracks().getTrack();
@@ -90,7 +76,11 @@ public class AlbumService {
         Iterator iterator = trackList.iterator();
         while (iterator.hasNext()) {
             com.slyszmarta.bemygoods.album.track.Track track = new com.slyszmarta.bemygoods.album.track.Track();
-            track.setName(iterator.next().toString());
+            StringBuilder builder = new StringBuilder();
+            var trackValue = iterator.next().toString();
+            builder.append(trackValue.substring(0, trackValue.length()-1).replace("Track(name=", ""));
+            String trackName = builder.toString();
+            track.setName(trackName);
             resultList.add(track);
         }
         return resultList;

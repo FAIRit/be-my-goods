@@ -1,14 +1,15 @@
 package com.slyszmarta.bemygoods.album.tag;
 
+import com.slyszmarta.bemygoods.album.AlbumDto;
+import com.slyszmarta.bemygoods.album.AlbumMapper;
 import com.slyszmarta.bemygoods.album.AlbumRepository;
 import com.slyszmarta.bemygoods.album.AlbumService;
-import com.slyszmarta.bemygoods.exceptions.AlbumTagNotFoundException;
 import com.slyszmarta.bemygoods.user.ApplicationUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,19 +29,13 @@ public class AlbumTagService {
     }
 
     public AlbumTagDto getAlbumTagById (Long userId, Long tagId) {
-        var albumTag = getTagById(tagId);
-        if (!albumTag.getId().equals(userId)) {
-            throw new AccessDeniedException("You don't have permission to delete this resource.");
-        }
+        var albumTag = albumTagRepository.findByIdAndUserId(tagId, userId);
         return AlbumTagMapper.INSTANCE.mapAlbumTagToDto(albumTag);
     }
 
     public AlbumTagDto saveAlbumTagToAlbum (Long tagId, Long userId, Long albumId) {
-        var tagToSave = getTagById(tagId);
-        var albumToSave = albumService.getAlbumById(albumId);
-        if (!albumToSave.getId().equals(userId) || !tagToSave.getUser().getId().equals(userId)) {
-            throw new AccessDeniedException("You don't have permission to delete this resource.");
-        }
+        var tagToSave = albumTagRepository.findByIdAndUserId(tagId, userId);
+        var albumToSave = albumService.getAlbumByIdAndUserId(albumId, userId);
         var tags = albumToSave.getAlbumTags();
         tags.add(tagToSave);
         albumToSave.setAlbumTags(tags);
@@ -52,6 +47,12 @@ public class AlbumTagService {
         return AlbumTagMapper.INSTANCE.mapAlbumTagToDto(tagToSave);
     }
 
+    public Set<AlbumDto> getAllTagAlbums(Long userId, Long tagId) {
+        return albumTagRepository.findByIdAndUserId(tagId, userId).getAlbums().stream()
+                .map(AlbumMapper.INSTANCE::mapAlbumToDto)
+                .collect(Collectors.toSet());
+    }
+
     public AlbumTagDto saveAlbumTag (AlbumTagDto dto, Long userId) {
         var user = userService.getExistingUser(userId);
         var albumTagToSave = AlbumTagMapper.INSTANCE.mapDtoToAlbumTag(dto);
@@ -61,14 +62,7 @@ public class AlbumTagService {
     }
 
     public void deleteUserAlbumTag (Long userId, Long tagId) {
-        var albumTagToDelete = getTagById(tagId);
-        if (!albumTagToDelete.getId().equals(userId)) {
-            throw new AccessDeniedException("You don't have permission to delete this resource.");
-        }
+        var albumTagToDelete = albumTagRepository.findByIdAndUserId(tagId, userId);
         albumTagRepository.delete(albumTagToDelete);
-    }
-
-    public AlbumTag getTagById (Long id) {
-        return albumTagRepository.findById(id).orElseThrow(() -> new AlbumTagNotFoundException(id));
     }
 }

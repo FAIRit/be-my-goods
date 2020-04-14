@@ -36,7 +36,21 @@ public class AlbumTagController {
         return ResponseEntity.ok(albumTagService.getAllUserAlbumTags(user.getId()));
     }
 
-    @GetMapping(value = "/tagId={tagId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{tagId}/albums", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get an object containing a list of all your albums under specified tag.", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Albums successfully retrieved."),
+            @ApiResponse(code = 401, message = "You are not authorized to access these resources."),
+            @ApiResponse(code = 403, message = "Resources you were trying to reach are forbidden."),
+            @ApiResponse(code = 404, message = "Resources you were trying to reach are not found.")
+    })
+    public ResponseEntity getAllTagAlbums(@ApiIgnore @LoggedInUser ApplicationUserDetails user, @ApiParam(value = "Specified tag id", required = true) @PathVariable Long tagId) {
+        return ResponseEntity.ok(albumTagService.getAllTagAlbums(user.getId(), tagId));
+    }
+
+    @GetMapping(value = "/{tagId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get a tag of specified id.", response = ResponseEntity.class)
@@ -64,7 +78,7 @@ public class AlbumTagController {
         return ResponseEntity.created(new URI("/tags")).body(albumTagService.saveAlbumTag(dto, user.getId()));
     }
 
-    @PostMapping("/tagId={tagId}/albumId={albumId}")
+    @PostMapping("/{tagId}/{albumId}")
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Add tag to an album", response = ResponseEntity.class)
@@ -78,7 +92,7 @@ public class AlbumTagController {
         return ResponseEntity.created(new URI("/tags")).body(albumTagService.saveAlbumTagToAlbum(tagId, user.getId(), albumId));
     }
 
-    @DeleteMapping("/tagId={tagId}")
+    @DeleteMapping("/{tagId}")
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete an album of specified id.", response = ResponseEntity.class)

@@ -60,6 +60,7 @@ docker-compose up
 * Browse music CD using musicbrainzid.
 * Save album to database.
 * See tracklist of saved album.
+* Mark albums with your own tags.
 
 ## Status
 Project is in progress.

@@ -11,6 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.nio.file.AccessDeniedException;
+
 @Api(value = "Tracks")
 @RestController
 @RequestMapping("/tracks")
@@ -19,7 +21,7 @@ public class TrackController {
 
     private final TrackService trackService;
 
-    @GetMapping(value = "/albumId={albumId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{albumId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get an object containing a list of all tracks on specified album.", response = ResponseEntity.class)
@@ -29,7 +31,7 @@ public class TrackController {
             @ApiResponse(code = 403, message = "Resources you were trying to reach are forbidden."),
             @ApiResponse(code = 404, message = "Resources you were trying to reach are not found.")
     })
-    public ResponseEntity getAllAlbumTracks(@ApiParam(value = "Specified album id") @PathVariable Long albumId, @ApiIgnore @LoggedInUser ApplicationUserDetails user) {
+    public ResponseEntity getAllAlbumTracks(@ApiParam(value = "Specified album id") @PathVariable Long albumId, @ApiIgnore @LoggedInUser ApplicationUserDetails user) throws AccessDeniedException {
         return ResponseEntity.ok(trackService.getAllAlbumTracks(albumId, user.getId()));
     }
 }

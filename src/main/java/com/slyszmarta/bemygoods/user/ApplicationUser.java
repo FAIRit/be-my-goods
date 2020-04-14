@@ -3,10 +3,7 @@ package com.slyszmarta.bemygoods.user;
 import com.slyszmarta.bemygoods.album.Album;
 import com.slyszmarta.bemygoods.album.tag.AlbumTag;
 import com.slyszmarta.bemygoods.avatar.Avatar;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
@@ -14,7 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "users")
 @Builder
 @AllArgsConstructor

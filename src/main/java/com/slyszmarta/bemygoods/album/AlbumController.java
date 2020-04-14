@@ -39,21 +39,7 @@ public class AlbumController {
         return ResponseEntity.ok(albumService.getAllUserAlbums(user.getId()));
     }
 
-    @GetMapping(value = "/tag={tag}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Get an object containing a list of all your albums under specified tag.", response = ResponseEntity.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Albums successfully retrieved."),
-            @ApiResponse(code = 401, message = "You are not authorized to access these resources."),
-            @ApiResponse(code = 403, message = "Resources you were trying to reach are forbidden."),
-            @ApiResponse(code = 404, message = "Resources you were trying to reach are not found.")
-    })
-    public ResponseEntity getAllTagAlbums(@ApiIgnore @LoggedInUser ApplicationUserDetails user, @ApiParam(value = "Specified tag", required = true) @PathVariable String tag) {
-        return ResponseEntity.ok(albumService.getAllTagAlbums(user.getId(), tag));
-    }
-
-    @GetMapping(value = "/albumId={albumId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{albumId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get an album of specified id.", response = ResponseEntity.class)
@@ -77,7 +63,7 @@ public class AlbumController {
             @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
             @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
     })
-    public ResponseEntity addAlbum(@ApiParam(value = "Album to add", required = true) @RequestBody AlbumResponse response, @ApiIgnore @LoggedInUser ApplicationUserDetails user) throws URISyntaxException {
+    public ResponseEntity addAlbum(@ApiParam(value = "Album to add", required = true) @RequestBody AlbumResponse response, @ApiIgnore @LoggedInUser ApplicationUserDetails user) throws URISyntaxException, NoSuchFieldException {
         return ResponseEntity.created(new URI("/albums")).body(albumService.saveAlbum(response, user.getId()));
     }
 
@@ -95,7 +81,7 @@ public class AlbumController {
         albumService.deleteAllUserAlbum(user.getId());
     }
 
-    @DeleteMapping("/albumId={albumId}")
+    @DeleteMapping("/{albumId}")
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete an album of specified id.", response = ResponseEntity.class)
