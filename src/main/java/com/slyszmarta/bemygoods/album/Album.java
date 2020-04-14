@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -42,9 +43,13 @@ public class Album {
     private ApplicationUser user;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "albums_tags",joinColumns = {@JoinColumn(name = "album_id")}, inverseJoinColumns = {@JoinColumn(name = "tag_id")})
+    @JoinTable(name = "albums_tags", joinColumns = {@JoinColumn(name = "album_id")}, inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     private Set<AlbumTag> albumTags = new HashSet<>();
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Track> tracksList;
+
+    @Column(name = "wiki", length = 65535, columnDefinition = "TEXT")
+    @Type(type = "text")
+    private String wiki;
 }

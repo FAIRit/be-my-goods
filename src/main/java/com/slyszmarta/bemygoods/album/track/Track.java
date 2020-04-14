@@ -10,7 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Data
-@Entity(name="tracks")
+@Entity(name = "tracks")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,8 +25,7 @@ public class Track {
     @Column(name = "title")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "album_id")
     private Album album;
-
 }

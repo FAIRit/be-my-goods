@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Album {
+public class AlbumResponse {
+    private String mbid;
     private String name;
     private String artist;
-    private String mbid;
     private Tracks tracks;
     private Wiki wiki;
 }

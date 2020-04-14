@@ -1,7 +1,9 @@
 package com.slyszmarta.bemygoods.lastFmApi;
 
-import com.slyszmarta.bemygoods.album.Albums;
+import com.slyszmarta.bemygoods.lastFmApi.response.AlbumResponse;
+
+import java.util.List;
 
 public interface IAlbumService {
-    Albums searchAlbums(String artist, String title);
+    List<AlbumResponse> searchAlbums(String artist, String title);
 }

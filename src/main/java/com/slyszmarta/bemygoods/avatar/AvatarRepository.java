@@ -5,9 +5,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AvatarRepository extends JpaRepository<Avatar, String> {
-
     void deleteAvatarByUser(Long id);
-
     Avatar findAvatarByUser(Long id);
-
 }

@@ -18,9 +18,9 @@ The app will allow logged users to store their music CDs collection. CDs can be 
 ## User stories
 * User can create his own account.
 * User can browse music CD inputting query - artist and title.
-* User can see detailed info about album browsed.
-* User after logging can see top albums of his fav genres on main page.
-* User can use his own tags to mark albums.
+* User can see detailed info about albumResponse browsed.
+* User after logging can see top albumResponses of his fav genres on main page.
+* User can use his own tags to mark albumResponses.
 
 ## Technologies
 * Spring Boot 2.2.5

@@ -2,7 +2,6 @@ package com.slyszmarta.bemygoods.avatar;
 
 import com.slyszmarta.bemygoods.security.user.ApplicationUserDetails;
 import com.slyszmarta.bemygoods.security.user.LoggedInUser;
-import com.slyszmarta.bemygoods.user.ApplicationUser;
 import com.slyszmarta.bemygoods.user.ApplicationUserService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
@@ -70,7 +68,7 @@ public class AvatarController {
             @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
             @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
     })
-    public void deleteFile(@ApiIgnore @LoggedInUser ApplicationUserDetails user){
+    public void deleteFile(@ApiIgnore @LoggedInUser ApplicationUserDetails user) {
         var deletingUser = applicationUserService.getExistingUser(user.getId());
         avatarService.deleteUserAvatar(deletingUser.getId());
     }

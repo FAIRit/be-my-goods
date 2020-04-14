@@ -1,6 +1,5 @@
 package com.slyszmarta.bemygoods.avatar;
 
-import com.slyszmarta.bemygoods.exceptions.AvatarNotFoundException;
 import com.slyszmarta.bemygoods.exceptions.AvatarStorageException;
 import com.slyszmarta.bemygoods.user.ApplicationUser;
 import com.slyszmarta.bemygoods.user.ApplicationUserRepository;

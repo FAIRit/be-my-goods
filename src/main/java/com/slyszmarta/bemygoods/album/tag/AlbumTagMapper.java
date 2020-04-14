@@ -5,11 +5,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface AlbumTagMapper {
-
     AlbumTagMapper INSTANCE = Mappers.getMapper(AlbumTagMapper.class);
-
-    AlbumTag map(AlbumTagDto dto);
-
-    AlbumTagDto map(AlbumTag entity);
-
+    AlbumTag mapDtoToAlbumTag (AlbumTagDto dto);
+    AlbumTagDto mapAlbumTagToDto(AlbumTag entity);
 }

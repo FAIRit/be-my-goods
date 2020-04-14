@@ -1,6 +1,7 @@
 package com.slyszmarta.bemygoods.album;
 
 import com.slyszmarta.bemygoods.lastFmApi.LastFmApiService;
+import com.slyszmarta.bemygoods.lastFmApi.response.AlbumResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,8 +31,8 @@ public class AlbumSearchController {
             @ApiResponse(code = 404, message = "Resources you were trying to reach are not found.")
     })
     @ResponseBody
-    public Albums getAlbumsByArtistAndTitle(@ApiParam(value = "Artist value for the album you need to retrieve", required = true) @PathVariable String artist,
-                                                    @ApiParam(value = "Title value for the album you need to retrieve", required = true) @PathVariable  String title) {
+    public List<AlbumResponse> getAlbumsByArtistAndTitle(@ApiParam(value = "Artist value for the album you need to retrieve", required = true) @PathVariable String artist,
+                                                         @ApiParam(value = "Title value for the album you need to retrieve", required = true) @PathVariable String title) {
         return lastFmApiService.searchAlbums(artist, title);
     }
 
@@ -45,7 +46,7 @@ public class AlbumSearchController {
             @ApiResponse(code = 404, message = "Resources you were trying to reach are not found.")
     })
     @ResponseBody
-    public Albums getAlbumsByMusicbrainzId(@ApiParam(value = "Musicbrainz id value for the album you need to retrieve", required = true) @PathVariable String musicbrainzId) {
+    public List<AlbumResponse> getAlbumsByMusicbrainzId(@ApiParam(value = "Musicbrainz id value for the album you need to retrieve", required = true) @PathVariable String musicbrainzId) {
         return lastFmApiService.searchAlbums(musicbrainzId);
     }
 }

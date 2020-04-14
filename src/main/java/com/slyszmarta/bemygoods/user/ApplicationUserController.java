@@ -28,7 +28,7 @@ public class ApplicationUserController {
             @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
             @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
     })
-    public ApplicationUserDto getCurrentUser(@ApiIgnore @LoggedInUser ApplicationUserDetails user){
+    public ApplicationUserDto getCurrentUser(@ApiIgnore @LoggedInUser ApplicationUserDetails user) {
         return ApplicationUserMapper.INSTANCE.map(user);
     }
 
@@ -40,7 +40,7 @@ public class ApplicationUserController {
             @ApiResponse(code = 401, message = "You are not authorized to access this resource."),
             @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
     })
-    public void deleteUser(@ApiIgnore @LoggedInUser ApplicationUserDetails user){
+    public void deleteUser(@ApiIgnore @LoggedInUser ApplicationUserDetails user) {
         applicationUserService.delete(user.getId());
     }
 

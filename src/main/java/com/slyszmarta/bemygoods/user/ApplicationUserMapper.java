@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Mapper(componentModel = "spring")
 @Component
 public interface ApplicationUserMapper {
-
     ApplicationUserMapper INSTANCE = Mappers.getMapper(ApplicationUserMapper.class);
 
     @Mapping(target = "albumList", ignore = true)
@@ -17,10 +16,11 @@ public interface ApplicationUserMapper {
     @Mapping(target = "albumTags", ignore = true)
     @Mapping(target = "country", ignore = true)
     @Mapping(target = "id", ignore = true)
-    ApplicationUser map(ApplicationUserDto dto);
+    ApplicationUser mapDtoToApplicationUser(ApplicationUserDto dto);
 
     @Mapping(target = "matchingPassword", ignore = true)
-    ApplicationUserDto map(ApplicationUser user);
+    ApplicationUserDto mapApplicationUserToDto(ApplicationUser user);
 
+    @Mapping(target = "matchingPassword", ignore = true)
     ApplicationUserDto map(ApplicationUserDetails user);
 }

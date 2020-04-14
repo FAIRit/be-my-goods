@@ -1,9 +1,11 @@
 package com.slyszmarta.bemygoods.album;
 
+import com.slyszmarta.bemygoods.lastFmApi.response.AlbumResponse;
 import com.slyszmarta.bemygoods.security.user.ApplicationUserDetails;
 import com.slyszmarta.bemygoods.security.user.LoggedInUser;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +25,7 @@ public class AlbumController {
         this.albumService = albumService;
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get an object containing a list of all your albums.", response = ResponseEntity.class)
@@ -37,7 +39,7 @@ public class AlbumController {
         return ResponseEntity.ok(albumService.getAllUserAlbums(user.getId()));
     }
 
-    @GetMapping("/tag={tag}")
+    @GetMapping(value = "/tag={tag}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get an object containing a list of all your albums under specified tag.", response = ResponseEntity.class)
@@ -47,11 +49,11 @@ public class AlbumController {
             @ApiResponse(code = 403, message = "Resources you were trying to reach are forbidden."),
             @ApiResponse(code = 404, message = "Resources you were trying to reach are not found.")
     })
-    public ResponseEntity getAllTagAlbums(@ApiIgnore @LoggedInUser ApplicationUserDetails user, @ApiParam(value = "Specified tag", required = true) @PathVariable String tag){
+    public ResponseEntity getAllTagAlbums(@ApiIgnore @LoggedInUser ApplicationUserDetails user, @ApiParam(value = "Specified tag", required = true) @PathVariable String tag) {
         return ResponseEntity.ok(albumService.getAllTagAlbums(user.getId(), tag));
     }
 
-    @GetMapping("/albumId={albumId}")
+    @GetMapping(value = "/albumId={albumId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get an album of specified id.", response = ResponseEntity.class)
@@ -65,7 +67,7 @@ public class AlbumController {
         return ResponseEntity.ok((albumService.getExistingAlbumByUserIdAndAlbumId(user.getId(), albumId)));
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Upload an album.", response = ResponseEntity.class)
@@ -75,8 +77,8 @@ public class AlbumController {
             @ApiResponse(code = 403, message = "Resource you were trying to reach is forbidden."),
             @ApiResponse(code = 404, message = "Resource you were trying to reach is not found.")
     })
-    public ResponseEntity addAlbum(@ApiParam(value = "Album to add", required = true) @RequestBody AlbumDto dto, @ApiIgnore @LoggedInUser ApplicationUserDetails user) throws URISyntaxException {
-        return ResponseEntity.created(new URI("/albums")).body(albumService.saveAlbum(dto, user.getId()));
+    public ResponseEntity addAlbum(@ApiParam(value = "Album to add", required = true) @RequestBody AlbumResponse response, @ApiIgnore @LoggedInUser ApplicationUserDetails user) throws URISyntaxException {
+        return ResponseEntity.created(new URI("/albums")).body(albumService.saveAlbum(response, user.getId()));
     }
 
     @DeleteMapping

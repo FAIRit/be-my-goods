@@ -1,9 +1,6 @@
 package com.slyszmarta.bemygoods.lastFmApi;
 
-import com.slyszmarta.bemygoods.album.AlbumDto;
-import com.slyszmarta.bemygoods.album.AlbumMapper;
-import com.slyszmarta.bemygoods.album.Albums;
-import com.slyszmarta.bemygoods.lastFmApi.response.Album;
+import com.slyszmarta.bemygoods.lastFmApi.response.AlbumResponse;
 import com.slyszmarta.bemygoods.lastFmApi.response.AlbumSearchResultWrapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,16 +25,16 @@ public class LastFmApiService implements IAlbumService {
         this.restTemplate = restTemplate;
     }
 
-    public Albums searchAlbums(String artist, String title){
+    public List<AlbumResponse> searchAlbums(String artist, String title) {
         String fullPath = getFullPath(artist, title);
         var entity = restTemplate.getForEntity(fullPath, AlbumSearchResultWrapper.class);
-        return entity.getBody() != null ? new Albums(mapResponseEntitytoAlbumDtoList(entity.getBody())) : new Albums(Collections.emptyList());
+        return entity.getBody() != null ? (mapResponseEntitytoAlbumDtoList(entity.getBody())) : (Collections.emptyList());
     }
 
-    public Albums searchAlbums(String musicbrainzId){
+    public List<AlbumResponse> searchAlbums(String musicbrainzId) {
         String fullPath = getFullPath(musicbrainzId);
         var entity = restTemplate.getForEntity(fullPath, AlbumSearchResultWrapper.class);
-        return entity.getBody() != null ? new Albums(mapResponseEntitytoAlbumDtoList(entity.getBody())) : new Albums(Collections.emptyList());
+        return entity.getBody() != null ? (mapResponseEntitytoAlbumDtoList(entity.getBody())) : (Collections.emptyList());
     }
 
     private String getFullPath(String artist, String title) {
@@ -53,7 +50,7 @@ public class LastFmApiService implements IAlbumService {
         return fullPath.toString();
     }
 
-    private String getFullPath(String musicbrainzId){
+    private String getFullPath(String musicbrainzId) {
         StringBuilder fullPath = new StringBuilder();
         fullPath.append(baseApiUrl);
         fullPath.append("/2.0/?method=album.getinfo&api_key=");
@@ -64,15 +61,14 @@ public class LastFmApiService implements IAlbumService {
         return fullPath.toString();
     }
 
-    private Album[] convertAlbumListToArray(List<Album> list){
-        Album[] albums = new Album[list.size()];
-        list.toArray(albums);
-        return albums;
+    private AlbumResponse[] convertAlbumListToArray(List<AlbumResponse> list) {
+        AlbumResponse[] albumResponses = new AlbumResponse[list.size()];
+        list.toArray(albumResponses);
+        return albumResponses;
     }
 
-    private List<AlbumDto> mapResponseEntitytoAlbumDtoList(AlbumSearchResultWrapper wrapper){
-        return Arrays.stream(convertAlbumListToArray(wrapper.getAlbum()))
-                .map(AlbumMapper.INSTANCE::map)
+    private List<AlbumResponse> mapResponseEntitytoAlbumDtoList(AlbumSearchResultWrapper wrapper) {
+        return Arrays.stream(convertAlbumListToArray(wrapper.getAlbumResponse()))
                 .collect(Collectors.toList());
     }
 }
