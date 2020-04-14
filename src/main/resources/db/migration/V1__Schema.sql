@@ -4,7 +4,6 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
-    wiki TEXT,
     PRIMARY KEY (id)
 );
 
@@ -19,12 +18,13 @@ CREATE TABLE avatars (
 
 
 CREATE TABLE albums (
-    id  BIGSERIAL NOT NULL,
+    album_id  BIGSERIAL NOT NULL,
     artist VARCHAR(255) NOT NULL,
     musicbrainz_id VARCHAR(255),
     name VARCHAR(255) NOT NULL,
     user_id INT8,
-    PRIMARY KEY (id),
+    wiki TEXT,
+    PRIMARY KEY (album_id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
@@ -33,14 +33,14 @@ CREATE TABLE tracks (
     title    VARCHAR(255) NOT NULL,
     album_id INT8,
     PRIMARY KEY (id),
-    FOREIGN KEY (album_id) REFERENCES albums (id)
+    FOREIGN KEY (album_id) REFERENCES albums (album_id)
 );
 
 CREATE TABLE tags (
-    id BIGSERIAL NOT NULL,
+    tag_id BIGSERIAL NOT NULL,
     name VARCHAR(255),
     user_id INT8,
-    PRIMARY KEY (id),
+    PRIMARY KEY (tag_id),
     FOREIGN KEY (user_id) REFERENCES users
 );
 
