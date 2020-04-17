@@ -40,11 +40,11 @@ public class ApplicationUserService implements UserDetailsService {
         applicationUserRepository.deleteById(id);
     }
 
-    public boolean existsByEmail(final String email) {
+    public boolean existsByEmail(String email) {
         return applicationUserRepository.existsByEmail(email);
     }
 
-    public ApplicationUser getExistingUser(final Long id) {
+    public ApplicationUser getExistingUser(Long id) {
         return applicationUserRepository.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
