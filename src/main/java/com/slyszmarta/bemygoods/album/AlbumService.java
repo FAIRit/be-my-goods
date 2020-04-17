@@ -68,7 +68,7 @@ public class AlbumService {
         return trackList;
     }
 
-    private List<com.slyszmarta.bemygoods.album.track.Track> getAlbumTracksFromJson(AlbumResponse albumResponse) throws NoSuchFieldException {
+    private List<com.slyszmarta.bemygoods.album.track.Track> getAlbumTracksFromJson(AlbumResponse albumResponse) {
         String jsonString = gson.toJson(albumResponse);
         AlbumResponse response = gson.fromJson(jsonString, AlbumResponse.class);
         List<Track> trackList = response.getTracks().getTrack();
