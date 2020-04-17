@@ -10,7 +10,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Data
-@Entity(name = "tracks")
+@Entity(name = "Track")
+@Table(name = "tracks")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,7 +26,24 @@ public class Track {
     @Column(name = "title")
     private String name;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")
     private Album album;
+
+    @Override
+    public boolean equals(Object object){
+        if(this==object){
+            return true;
+        }
+        if (!(object instanceof Track)){
+            return false;
+        }
+        return id != null && id.equals(((Album) object).getId());
+    }
+
+    @Override
+    public int hashCode(){
+        return 31;
+    }
+
 }

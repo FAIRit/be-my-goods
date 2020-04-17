@@ -36,14 +36,8 @@ public class AlbumTagService {
     public AlbumTagDto saveAlbumTagToAlbum (Long tagId, Long userId, Long albumId) {
         var tagToSave = albumTagRepository.findByIdAndUserId(tagId, userId);
         var albumToSave = albumService.getAlbumByIdAndUserId(albumId, userId);
-        var tags = albumToSave.getAlbumTags();
-        tags.add(tagToSave);
-        albumToSave.setAlbumTags(tags);
+        albumToSave.addAlbumTag(tagToSave);
         albumRepository.save(albumToSave);
-        var albums = tagToSave.getAlbums();
-        albums.add(albumToSave);
-        tagToSave.setAlbums(albums);
-        albumTagRepository.save(tagToSave);
         return AlbumTagMapper.INSTANCE.mapAlbumTagToDto(tagToSave);
     }
 
@@ -56,8 +50,7 @@ public class AlbumTagService {
     public AlbumTagDto saveAlbumTag (AlbumTagDto dto, Long userId) {
         var user = userService.getExistingUser(userId);
         var albumTagToSave = AlbumTagMapper.INSTANCE.mapDtoToAlbumTag(dto);
-        albumTagToSave.setUser(user);
-        albumTagRepository.save(albumTagToSave);
+        user.addTag(albumTagToSave);
         return AlbumTagMapper.INSTANCE.mapAlbumTagToDto(albumTagToSave);
     }
 
