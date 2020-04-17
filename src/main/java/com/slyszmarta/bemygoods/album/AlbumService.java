@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,13 +30,9 @@ public class AlbumService {
     public AlbumDto saveAlbum(AlbumResponse albumResponse, Long userId) throws NoSuchFieldException {
         var user = userService.getExistingUser(userId);
         var albumToSave = AlbumMapper.INSTANCE.mapResponseToAlbum(albumResponse);
+        albumToSave = getAlbumTracksFromJson(albumResponse);
         albumToSave.setUser(user);
-        var trackList = getAlbumTracksFromJson(albumResponse);
-        albumToSave.setTracksList(trackList);
         albumToSave.setWiki(getWikiFromJson(albumResponse));
-        albumRepository.save(albumToSave);
-        var updatedTrackList = updateAlbumOnTrackList(albumToSave, trackList);
-        albumToSave.setTracksList(updatedTrackList);
         albumRepository.save(albumToSave);
         return AlbumMapper.INSTANCE.mapAlbumToDto(albumToSave);
     }
@@ -60,19 +55,11 @@ public class AlbumService {
         return albumRepository.findByIdAndUserId(id, userId);
     }
 
-    private List<com.slyszmarta.bemygoods.album.track.Track> updateAlbumOnTrackList(Album album, List<com.slyszmarta.bemygoods.album.track.Track> trackList) {
-        for (int i = 0; i < trackList.size(); i++) {
-            var track = trackList.get(i);
-            track.setAlbum(album);
-        }
-        return trackList;
-    }
-
-    private List<com.slyszmarta.bemygoods.album.track.Track> getAlbumTracksFromJson(AlbumResponse albumResponse) {
+    private Album getAlbumTracksFromJson(AlbumResponse albumResponse) throws NoSuchFieldException {
         String jsonString = gson.toJson(albumResponse);
         AlbumResponse response = gson.fromJson(jsonString, AlbumResponse.class);
         List<Track> trackList = response.getTracks().getTrack();
-        List<com.slyszmarta.bemygoods.album.track.Track> resultList = new ArrayList<>();
+        Album albumToSave = AlbumMapper.INSTANCE.mapResponseToAlbum(albumResponse);
         Iterator iterator = trackList.iterator();
         while (iterator.hasNext()) {
             com.slyszmarta.bemygoods.album.track.Track track = new com.slyszmarta.bemygoods.album.track.Track();
@@ -81,9 +68,9 @@ public class AlbumService {
             builder.append(trackValue.substring(0, trackValue.length()-1).replace("Track(name=", ""));
             String trackName = builder.toString();
             track.setName(trackName);
-            resultList.add(track);
+            albumToSave.addTrack(track);
         }
-        return resultList;
+        return albumToSave;
     }
 
     private String getWikiFromJson(AlbumResponse albumResponse) {

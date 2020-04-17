@@ -99,6 +99,10 @@ https://www.youtube.com/watch?v=YFl2mCHdv24
 
 https://www.youtube.com/watch?v=Qw9zlE3t8Ko
 
+https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
+
+https://vladmihalcea.com/jpa-hibernate-synchronize-bidirectional-entity-associations/
+
 ## Contact
 Created by [Marta Słysz](https://github.com/MartaSlysz) during FairIT - training and recruitment program for women.
 If you want to know more about FairIT, here is [website](https://www.fairit.pl/) and [Linkedin](https://www.linkedin.com/company/fairit-trojmiasto/).

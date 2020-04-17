@@ -13,7 +13,8 @@ import java.util.Set;
 
 @Getter
 @Setter
-@Entity(name = "users")
+@Entity(name = "User")
+@Table(name = "users")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -43,6 +44,16 @@ public class ApplicationUser {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<AlbumTag> albumTags = new HashSet<>();
+
+    public void addTag(AlbumTag albumTag){
+        albumTags.add(albumTag);
+        albumTag.setUser(this);
+    }
+
+    public void removeTag(AlbumTag albumTag){
+        albumTags.remove(albumTag);
+        albumTag.setUser(null);
+    }
 
     @Transient
     private List<SimpleGrantedAuthority> authorities;
