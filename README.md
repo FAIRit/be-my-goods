@@ -17,28 +17,95 @@ The app will allow logged users to store their music CDs collection. CDs can be 
 
 ## User stories
 * User can create his own account.
-* User can browse music CD inputting query - artist or title.
+* User can browse music CD inputting query - set of artist and title or musicbrainzid.
 * User can see detailed info about album browsed.
-* User after logging can see top albums of his fav genres on main page.
+* User can use his own tags to mark albums.
 
 ## Technologies
-* Spring Boot 2.2.4
+* Spring Boot 2.2.5
+* Java 13
 * PostgreSQL 12
 * Docker
+* Swagger 2
+* Flyway
 
 ## Used API
 * [Last.fm API](https://www.last.fm/api/)
 
-## Setup
-Work in progress.
+## Setup using Docker and docker-compose
 
+Build application
+```
+$ gradle clean build
+```
+In build folder create dependency directory.
+```
+mkdir dependency
+```
+
+In dependency directory extract fatJar from build/libs directory
+```
+cd dependency 
+jar -xf ../libs/*.jar
+```
+
+Run with docker-compose
+```
+docker-compose build --build-arg LASTFM_API_KEY=YOUR_KEY --build-arg JWT_SECRET=YOUR_SECRET
+docker-compose up
+```
+
+## Features
+* Browse music CD using artist and title.
+* Browse music CD using musicbrainzid.
+* Save album to database.
+* See tracklist of saved album.
+* Mark albums with your own tags.
 
 ## Status
 Project is in progress.
 
 ## Inspiration
 
+https://blog.codeleak.pl/2017/09/lombok-you-should-definitely-give-it-try.html
+
+https://dev.to/cuongld2/create-apis-with-jwt-authorization-using-spring-boot-24f9
+
+https://www.baeldung.com/spring-boot-testing
+
+https://springframework.guru/using-resttemplate-in-spring/
+
+https://www.youtube.com/watch?v=gduKpLW_vdY
+
+https://www.youtube.com/watch?v=8s9I1G4tXhA
+
+https://github.com/swagger-api/swagger-core/wiki/Annotations
+
+https://sztukakodu.pl/jak-definiowac-kody-http-odpowiedzi-w-springu/
+
+https://blog.codeleak.pl/2013/04/spring-mvc-pathvariable-tips.html
+
+https://blog.codeleak.pl/2016/09/injecting-authenticated-user-into.html
+
+https://github.com/Baeldung/spring-security-registration - and linked tutorials
+
+https://www.callicoder.com/spring-boot-file-upload-download-jpa-hibernate-mysql-database-example/
+
+https://www.baeldung.com/jpa-tagging-advanced
+
+https://blog.codeleak.pl/2020/03/spring-boot-docker-compose.html
+
+https://www.youtube.com/watch?v=YFl2mCHdv24
+
+https://www.youtube.com/watch?v=Qw9zlE3t8Ko
+
+https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
+
+https://vladmihalcea.com/jpa-hibernate-synchronize-bidirectional-entity-associations/
 
 ## Contact
 Created by [Marta Słysz](https://github.com/MartaSlysz) during FairIT - training and recruitment program for women.
 If you want to know more about FairIT, here is [website](https://www.fairit.pl/) and [Linkedin](https://www.linkedin.com/company/fairit-trojmiasto/).
+
+I would also like to thank my coding mentor - [Rafał Borowiec](https://github.com/kolorobot) - for his advices and patience.
+Rafał also keeps a [Codeleak Blog](https://blog.codeleak.pl) with many useful articles.

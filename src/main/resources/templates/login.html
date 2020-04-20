@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{page.loginForm}"></title>
+    <div th:replace="fragments:: head"></div>
+</head>
+<body>
+<div th:replace="fragments:: header"></div>
+
+<div class="ui middle centered aligned stackable grid container">
+    <div class="column field">
+        <form class="ui large form"  th:action="@{/auth/login}" method="post">
+            <div class="ui stacked segment">
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="text" name="username" th:placeholder="#{page.user.username}">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="password" name="password" th:placeholder="#{page.user.password}">
+                    </div>
+                </div>
+                <button class="ui fluid large teal submit button" type="submit" th:text="#{page.login}"></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
