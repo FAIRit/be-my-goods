@@ -1,33 +1,37 @@
 package com.slyszmarta.bemygoods.album.track;
 
 import com.slyszmarta.bemygoods.album.Album;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "Track")
-@Table(name = "tracks")
+@Table(name = "track")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel(description = "Track details")
 public class Track {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "track_id", updatable = false, nullable = false)
+    @ApiModelProperty(notes = "Track ID")
     private Long id;
 
     @NotNull
     @Column(name = "title")
+    @ApiModelProperty(notes = "Track name")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "album_id")
+    @ApiModelProperty(notes = "Track's album ID")
     private Album album;
 
     @Override

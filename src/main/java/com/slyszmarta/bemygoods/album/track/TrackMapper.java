@@ -7,4 +7,5 @@ import org.mapstruct.factory.Mappers;
 public interface TrackMapper {
     TrackMapper INSTANCE = Mappers.getMapper(TrackMapper.class);
     TrackDto mapTrackToDto(Track track);
+    Track mapDtoToTrack(TrackDto dto);
 }

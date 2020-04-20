@@ -1,7 +1,5 @@
 package com.slyszmarta.bemygoods.user;
 
-import com.github.javafaker.Faker;
-import com.slyszmarta.bemygoods.security.user.ApplicationUserDetails;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,8 +8,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.xml.bind.ValidationException;
-import java.util.Collections;
 
+import static com.slyszmarta.bemygoods.testHelpers.testUser.user;
+import static com.slyszmarta.bemygoods.testHelpers.testUserDto.dto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,38 +29,9 @@ public class ApplicationUserServiceTest {
     @InjectMocks
     private ApplicationUserService userService;
 
-    public ApplicationUserDto dto(){
-        var faker = new Faker();
-        ApplicationUserDto dto = new ApplicationUserDto();
-        dto.setEmail(faker.internet().emailAddress());
-        dto.setUsername(faker.name().firstName());
-        dto.setPassword(faker.animal().name());
-        return dto;
-    }
-
-    ApplicationUserDto dto = dto();
-
-    public ApplicationUser user(){
-        var faker = new Faker();
-        ApplicationUser user = ApplicationUser.builder()
-                .id(faker.number().randomNumber())
-                .username(faker.name().firstName())
-                .password(faker.animal().name())
-                .email(faker.internet().emailAddress())
-                .country(faker.country().name())
-                .albumList(Collections.emptyList())
-                .albumTags(Collections.emptySet())
-                .build();
-        return user;
-    }
-
-    public ApplicationUserDetails userDetails(ApplicationUser user){
-        ApplicationUserDetails userDetails = new ApplicationUserDetails(user);
-        return userDetails;
-    }
-
     @Test
-    public void whenSaveUserShouldReturnUser() throws ValidationException {
+    public void shouldSaveUser() throws ValidationException {
+        var dto = dto();
         when(userRepository.save(any(ApplicationUser.class))).then(returnsFirstArg());
         ApplicationUser savedUser = userService.create(dto);
         assertThat(dto.getEmail()).isSameAs(savedUser.getEmail());
@@ -72,14 +42,15 @@ public class ApplicationUserServiceTest {
     }
 
     @Test
-    public void shouldBeDelete(){
-        ApplicationUser user = user();
+    public void shouldDeleteUser(){
+        var user = user();
         userService.delete(user.getId());
         verify(userRepository).deleteById(user.getId());
     }
 
     @Test
-    public void ifExistsByEmailReturnTrue() throws ValidationException {
+    public void existsByEmailShouldReturnTrue() throws ValidationException {
+        var dto = dto();
         ApplicationUser savedUser = userService.create(dto);
         assertThat(dto.getEmail()).isSameAs(savedUser.getEmail());
         assertThat(passwordEncoder.encode(dto.getPassword())).isSameAs(savedUser.getPassword());
@@ -88,7 +59,8 @@ public class ApplicationUserServiceTest {
     }
 
     @Test
-    public void ifUserExistsReturnUser() throws ValidationException {
+    public void existsByUsernameShouldReturnTrue() throws ValidationException {
+        var dto = dto();
         ApplicationUser savedUser = userService.create(dto);
         assertThat(dto.getEmail()).isSameAs(savedUser.getEmail());
         assertThat(passwordEncoder.encode(dto.getPassword())).isSameAs(savedUser.getPassword());

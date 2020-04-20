@@ -40,7 +40,6 @@ public class AvatarService {
                     .user(user)
                     .build();
             user.setAvatar(avatar);
-            userRepository.save(user);
             return avatarRepository.save(avatar);
         } catch (IOException ex) {
             throw new AvatarStorageException("Could not store file " + fileName + ". Please try again!", ex);

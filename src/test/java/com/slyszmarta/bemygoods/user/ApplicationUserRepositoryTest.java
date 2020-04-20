@@ -1,6 +1,5 @@
 package com.slyszmarta.bemygoods.user;
 
-import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -8,9 +7,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.Collections;
 import java.util.Optional;
 
+import static com.slyszmarta.bemygoods.testHelpers.testUser.user;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -26,24 +25,10 @@ public class ApplicationUserRepositoryTest {
     @Autowired
     private ApplicationUserRepository applicationUserRepository;
 
-    public ApplicationUser given(){
-        var faker = new Faker();
-        ApplicationUser user = ApplicationUser.builder()
-                .id(faker.number().randomNumber())
-                .username(faker.name().firstName())
-                .password(faker.animal().name())
-                .email(faker.internet().emailAddress())
-                .country(faker.country().name())
-                .albumList(Collections.emptyList())
-                .albumTags(Collections.emptySet())
-                .build();
-        return user;
-    }
-
     @Test
-    public void whenFindByUsername_thenReturnUser() {
+    public void whenFindByUsernameReturnUser() {
         //given
-        var user = given();
+        var user = user();
         entityManager.merge(user);
         entityManager.flush();
         // when
@@ -53,9 +38,9 @@ public class ApplicationUserRepositoryTest {
     }
 
     @Test
-    public void whenExistsByEmail_thenReturnTrue(){
+    public void whenExistsByEmailReturnTrue(){
         //given
-        var user = given();
+        var user = user();
         entityManager.merge(user);
         entityManager.flush();
         //when
@@ -65,9 +50,9 @@ public class ApplicationUserRepositoryTest {
     }
 
     @Test
-    public void whenExistsByUsername_thenReturnTrue(){
+    public void whenExistsByUsernameReturnTrue(){
         //given
-        var user = given();
+        var user = user();
         entityManager.merge(user);
         entityManager.flush();
         //when

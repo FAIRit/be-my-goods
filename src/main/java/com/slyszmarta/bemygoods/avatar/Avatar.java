@@ -3,24 +3,23 @@ package com.slyszmarta.bemygoods.avatar;
 import com.slyszmarta.bemygoods.user.ApplicationUser;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Builder
-@Entity(name = "avatars")
+@Entity(name = "Avatar")
+@Table(name = "avatar")
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "Avatar details")
 public class Avatar {
 
     @Id
-    @Column(name = "id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "avatar_id", updatable = false, nullable = false)
     @ApiModelProperty(notes = "Avatar ID")
     private String id;
 

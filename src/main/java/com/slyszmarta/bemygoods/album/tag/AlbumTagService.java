@@ -20,7 +20,6 @@ public class AlbumTagService {
     private final ApplicationUserService userService;
     private final AlbumTagRepository albumTagRepository;
     private final AlbumService albumService;
-    private final AlbumRepository albumRepository;
 
     public AlbumTags getAllUserAlbumTags (Long userId) {
         return new AlbumTags(albumTagRepository.findAllByUserId(userId).stream()
@@ -37,7 +36,7 @@ public class AlbumTagService {
         var tagToSave = albumTagRepository.findByIdAndUserId(tagId, userId);
         var albumToSave = albumService.getAlbumByIdAndUserId(albumId, userId);
         albumToSave.addAlbumTag(tagToSave);
-        albumRepository.save(albumToSave);
+        albumTagRepository.save(tagToSave);
         return AlbumTagMapper.INSTANCE.mapAlbumTagToDto(tagToSave);
     }
 
@@ -51,11 +50,14 @@ public class AlbumTagService {
         var user = userService.getExistingUser(userId);
         var albumTagToSave = AlbumTagMapper.INSTANCE.mapDtoToAlbumTag(dto);
         user.addTag(albumTagToSave);
+        albumTagRepository.save(albumTagToSave);
         return AlbumTagMapper.INSTANCE.mapAlbumTagToDto(albumTagToSave);
     }
 
     public void deleteUserAlbumTag (Long userId, Long tagId) {
         var albumTagToDelete = albumTagRepository.findByIdAndUserId(tagId, userId);
+        var user = userService.getExistingUser(userId);
+        user.removeTag(albumTagToDelete);
         albumTagRepository.delete(albumTagToDelete);
     }
 }

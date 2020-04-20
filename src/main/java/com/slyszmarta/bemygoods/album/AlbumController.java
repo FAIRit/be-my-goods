@@ -4,6 +4,7 @@ import com.slyszmarta.bemygoods.lastFmApi.response.AlbumResponse;
 import com.slyszmarta.bemygoods.security.user.ApplicationUserDetails;
 import com.slyszmarta.bemygoods.security.user.LoggedInUser;
 import io.swagger.annotations.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,10 @@ import java.net.URISyntaxException;
 @Api(value = "Albums")
 @RestController
 @RequestMapping("/albums")
+@RequiredArgsConstructor
 public class AlbumController {
 
     private final AlbumService albumService;
-
-    public AlbumController(AlbumService albumService) {
-        this.albumService = albumService;
-    }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_USER')")

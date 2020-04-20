@@ -27,18 +27,19 @@ public class AlbumService {
                 .collect(Collectors.toList()));
     }
 
-    public AlbumDto saveAlbum(AlbumResponse albumResponse, Long userId) throws NoSuchFieldException {
+    public AlbumDto saveAlbum(AlbumResponse albumResponse, Long userId) {
         var user = userService.getExistingUser(userId);
         var albumToSave = AlbumMapper.INSTANCE.mapResponseToAlbum(albumResponse);
         albumToSave = getAlbumTracksFromJson(albumResponse);
-        albumToSave.setUser(user);
         albumToSave.setWiki(getWikiFromJson(albumResponse));
+        user.addAlbum(albumToSave);
         albumRepository.save(albumToSave);
         return AlbumMapper.INSTANCE.mapAlbumToDto(albumToSave);
     }
 
     public void deleteUserAlbum(Long userId, Long albumId) {
         var albumToDelete = getAlbumByIdAndUserId(albumId, userId);
+        var user = userService.getExistingUser(userId);
         albumRepository.delete(albumToDelete);
     }
 
@@ -55,7 +56,7 @@ public class AlbumService {
         return albumRepository.findByIdAndUserId(id, userId);
     }
 
-    private Album getAlbumTracksFromJson(AlbumResponse albumResponse) throws NoSuchFieldException {
+    private Album getAlbumTracksFromJson(AlbumResponse albumResponse){
         String jsonString = gson.toJson(albumResponse);
         AlbumResponse response = gson.fromJson(jsonString, AlbumResponse.class);
         List<Track> trackList = response.getTracks().getTrack();
@@ -78,5 +79,4 @@ public class AlbumService {
         AlbumResponse response = gson.fromJson(jsonString, AlbumResponse.class);
         return response.getWiki().getSummary();
     }
-
 }
