@@ -19,7 +19,7 @@ public class JwtToken {
 
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
-    @Value("${JWT_SECRET}")
+    @Value("${jwt_secret}")
     private String secret;
 
     public String getUsernameFromToken(String token) {

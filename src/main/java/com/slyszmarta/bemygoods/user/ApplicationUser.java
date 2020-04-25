@@ -75,6 +75,7 @@ public class ApplicationUser {
         this.avatar = avatar;
     }
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ApiModelProperty(notes = "User album tags")
     private Set<AlbumTag> albumTags = new HashSet<>();

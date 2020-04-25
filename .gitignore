@@ -6,7 +6,7 @@ build/
 !**/src/test/**
 /src/main/resources/application-development.properties
 /src/main/resources/application.properties
-Dockerfile_development
+Dockerfile_dev
 
 # Ignore Gradle GUI config
 gradle-app.setting

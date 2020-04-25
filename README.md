@@ -32,28 +32,17 @@ The app will allow logged users to store their music CDs collection. CDs can be 
 ## Used API
 * [Last.fm API](https://www.last.fm/api/)
 
-## Setup using Docker and docker-compose
+## Setup (using Docker and docker-compose)
+You have to:
+- have Docker and docker-compose installed on your computer
+- provide [Last.fm API](https://www.last.fm/api/) key and JWT secret - for example generated strong password.
 
-Build application
 ```
-$ gradle clean build
+$ ./run.sh LASTFM_API_KEY JWT_SECRET
 ```
-In build folder create dependency directory.
-```
-mkdir dependency
-```
+For landing page - see http://localhost:8082
 
-In dependency directory extract fatJar from build/libs directory
-```
-cd dependency 
-jar -xf ../libs/*.jar
-```
-
-Run with docker-compose
-```
-docker-compose build --build-arg LASTFM_API_KEY=YOUR_KEY --build-arg JWT_SECRET=YOUR_SECRET
-docker-compose up
-```
+For Swagger documentation - see http://localhost:8082/swagger-ui.html
 
 ## Features
 * Browse music CD using artist and title.
@@ -63,45 +52,42 @@ docker-compose up
 * Mark albums with your own tags.
 
 ## Status
-Project is in progress.
+It works but I am working on some improvements 
 
 ## Inspiration
+* https://blog.codeleak.pl/2017/09/lombok-you-should-definitely-give-it-try.html
 
-https://blog.codeleak.pl/2017/09/lombok-you-should-definitely-give-it-try.html
+* https://dev.to/cuongld2/create-apis-with-jwt-authorization-using-spring-boot-24f9
 
-https://dev.to/cuongld2/create-apis-with-jwt-authorization-using-spring-boot-24f9
+* https://springframework.guru/using-resttemplate-in-spring/
 
-https://www.baeldung.com/spring-boot-testing
+* https://www.youtube.com/watch?v=gduKpLW_vdY
 
-https://springframework.guru/using-resttemplate-in-spring/
+* https://www.youtube.com/watch?v=8s9I1G4tXhA
 
-https://www.youtube.com/watch?v=gduKpLW_vdY
+* https://github.com/swagger-api/swagger-core/wiki/Annotations
 
-https://www.youtube.com/watch?v=8s9I1G4tXhA
+* https://sztukakodu.pl/jak-definiowac-kody-http-odpowiedzi-w-springu/
 
-https://github.com/swagger-api/swagger-core/wiki/Annotations
+* https://blog.codeleak.pl/2013/04/spring-mvc-pathvariable-tips.html
 
-https://sztukakodu.pl/jak-definiowac-kody-http-odpowiedzi-w-springu/
+* https://blog.codeleak.pl/2016/09/injecting-authenticated-user-into.html
 
-https://blog.codeleak.pl/2013/04/spring-mvc-pathvariable-tips.html
+* https://github.com/Baeldung/spring-security-registration - and linked tutorials
 
-https://blog.codeleak.pl/2016/09/injecting-authenticated-user-into.html
+* https://www.callicoder.com/spring-boot-file-upload-download-jpa-hibernate-mysql-database-example/
 
-https://github.com/Baeldung/spring-security-registration - and linked tutorials
+* https://www.baeldung.com/jpa-tagging-advanced
 
-https://www.callicoder.com/spring-boot-file-upload-download-jpa-hibernate-mysql-database-example/
+* https://blog.codeleak.pl/2020/03/spring-boot-docker-compose.html
 
-https://www.baeldung.com/jpa-tagging-advanced
+* https://www.youtube.com/watch?v=YFl2mCHdv24
 
-https://blog.codeleak.pl/2020/03/spring-boot-docker-compose.html
+* https://www.youtube.com/watch?v=Qw9zlE3t8Ko
 
-https://www.youtube.com/watch?v=YFl2mCHdv24
+* https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
 
-https://www.youtube.com/watch?v=Qw9zlE3t8Ko
-
-https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
-
-https://vladmihalcea.com/jpa-hibernate-synchronize-bidirectional-entity-associations/
+* https://vladmihalcea.com/jpa-hibernate-synchronize-bidirectional-entity-associations/
 
 ## Contact
 Created by [Marta Słysz](https://github.com/MartaSlysz) during FairIT - training and recruitment program for women.

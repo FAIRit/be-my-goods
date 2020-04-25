@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class LastFmApiService implements IAlbumService {
-    @Value("${LASTFM_API_URL}")
+public class LastFmApiService{
+    @Value("${lastfm_api_url}")
     private String baseApiUrl;
 
-    @Value("${LASTFM_API_KEY}")
+    @Value("${lastfm_api_key}")
     private String apiKey;
 
     private final RestTemplate restTemplate;

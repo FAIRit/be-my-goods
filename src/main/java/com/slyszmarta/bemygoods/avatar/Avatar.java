@@ -33,6 +33,7 @@ public class Avatar {
     private byte[] data;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     @ApiModelProperty(notes = "Avatar user")
     private ApplicationUser user;
 }

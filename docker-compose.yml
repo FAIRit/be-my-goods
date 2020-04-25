@@ -12,7 +12,10 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile_production
+      dockerfile: Dockerfile
+      args:
+        LASTFM_API_KEY:
+        JWT_SECRET:
     ports:
       - "8082:8080"
     environment:

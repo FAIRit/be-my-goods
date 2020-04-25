@@ -50,6 +50,7 @@ public class Album {
     @ApiModelProperty(notes = "Album user")
     private ApplicationUser user;
 
+    @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "album_tag", joinColumns = {@JoinColumn(name = "album_id")}, inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     @ApiModelProperty(notes = "Album tags")
@@ -65,6 +66,7 @@ public class Album {
         albumTag.getAlbums().remove(this);
     }
 
+    @Builder.Default
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
     @ApiModelProperty(notes = "Album tracks")
     private List<Track> tracksList = new ArrayList<>();

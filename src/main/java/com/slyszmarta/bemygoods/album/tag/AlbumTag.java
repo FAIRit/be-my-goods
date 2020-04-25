@@ -32,6 +32,7 @@ public class AlbumTag {
     @ApiModelProperty(notes = "Album tag name")
     private String name;
 
+    @Builder.Default
     @ManyToMany(mappedBy = "albumTags")
     @ApiModelProperty(notes = "Albums with specified tag")
     private Set<Album> albums = new HashSet<>();

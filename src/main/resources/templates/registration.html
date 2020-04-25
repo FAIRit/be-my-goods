@@ -6,7 +6,7 @@
     <title th:text="#{page.registrationForm}"></title>
     <div th:replace="fragments:: head"></div>
 </head>
-<body>
+<body style="background-color: #D7C9BE">
 <div th:replace="fragments:: header"></div>
 
 <h1 th:text="#{page.registrationForm}"></h1>
@@ -28,6 +28,63 @@
         <input type="text" name="matchingPassword" th:placeholder="#{page.user.confirmPassword}">
     </div>
     <button class="ui button" type="submit">Submit</button>
+    <div class="ui error message"></div>
 </form>
+<script>
+    $('.ui.form')
+        .form({
+            fields: {
+                username: {
+                    identifier: 'username',
+                    rules: [
+                        {
+                            type   : 'empty',
+                            prompt : 'Please enter your name'
+                        },
+                        {
+                            type   : 'minLength[4]',
+                            prompt : 'Your username must be at least {ruleValue} characters'
+                        }
+                    ]
+                },
+                email: {
+                    identifier: 'email',
+                    rules: [
+                        {
+                            type   : 'empty',
+                            prompt : 'Please enter your email'
+                        },
+                        {
+                            type   : 'email',
+                            prompt : 'Please enter a valid email'
+                        }
+                    ]
+                },
+                password: {
+                    identifier: 'password',
+                    rules: [
+                        {
+                            type   : 'empty',
+                            prompt : 'Please enter your password'
+                        },
+                        {
+                            type   : 'minLength[6]',
+                            prompt : 'Your password must be at least {ruleValue} characters'
+                        }
+                    ]
+                },
+                matchingPassword: {
+                    identifier: 'matchingPassword',
+                    rules: [
+                        {
+                            type   : 'match[password]',
+                            prompt : 'Please put the same value in both password fields'
+                        }
+                    ]
+                }
+            }
+        })
+    ;
+</script>
 </body>
 </html>

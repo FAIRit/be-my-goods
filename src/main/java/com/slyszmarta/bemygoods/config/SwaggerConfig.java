@@ -2,7 +2,6 @@ package com.slyszmarta.bemygoods.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -20,7 +19,6 @@ import java.util.Collections;
 @Configuration
 @EnableSwagger2
 @Order(1000)
-@Profile("development")
 public class SwaggerConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     @Bean

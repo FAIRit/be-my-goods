@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="#{page.landing}"></title>
+    <div th:replace="fragments:: head"></div>
 </head>
-<body>
+<body style="background-color: #8B775F">
+<div th:replace="fragments:: header"></div>
+
+    <div class="ui text container">
+        <div class="ui compact segment">
+        <p><span class="ui large red text">My goods</span> is Springboot application, helping you to organize your music CDs collection.
+           Register and sign up to add CDs verified by Last.fm. Tag your albums - mark your fave albums or sort albums by genres, just as you want to!
+        </p>
+        <p><a href="http://localhost:8082/swagger-ui.html">Visit Swagger documentation page.</a></p>
+        </div>
+    </div>
 
 </body>
 </html>

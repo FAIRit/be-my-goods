@@ -11,7 +11,9 @@ CREATE TABLE avatar (
      avatar_id  SERIAL NOT NULL,
      data OID,
      filetype VARCHAR(255),
-     PRIMARY KEY (avatar_id)
+     user_id  INT8,
+     PRIMARY KEY (avatar_id),
+     FOREIGN KEY (user_id) REFERENCES application_user (user_id)
 );
 
 CREATE TABLE album (

@@ -16,6 +16,7 @@ public interface ApplicationUserMapper {
     @Mapping(target = "albumTags", ignore = true)
     @Mapping(target = "country", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "authorities", ignore = true)
     ApplicationUser mapDtoToApplicationUser(ApplicationUserDto dto);
 
     @Mapping(target = "matchingPassword", ignore = true)

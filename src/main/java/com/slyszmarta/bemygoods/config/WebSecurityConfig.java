@@ -25,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final ApplicationUserService applicationUserService;
     private final JwtRequestFilter jwtRequestFilter;
 
-    String[] pathArray = new String[]{"/auth/**", "/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**"};
+    String[] pathArray = new String[]{"/", "/auth/**", "/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**"};
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
