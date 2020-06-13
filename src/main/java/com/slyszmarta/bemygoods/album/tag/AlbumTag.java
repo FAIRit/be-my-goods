@@ -5,13 +5,14 @@ import com.slyszmarta.bemygoods.user.ApplicationUser;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@ApiModel(description = "Album tag details")
 @Getter
 @Setter
 @Entity(name = "AlbumTag")
@@ -19,27 +20,28 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(description = "Album tag details")
-public class AlbumTag {
+public class AlbumTag implements Serializable {
 
+    private static final long serialVersionUID = -4110363081291729285L;
+
+    @ApiModelProperty(notes = "Album tag ID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_id", updatable = false, nullable = false)
-    @ApiModelProperty(notes = "Album tag ID")
     private Long id;
 
-    @Column(name = "name", unique = true)
     @ApiModelProperty(notes = "Album tag name")
+    @Column(name = "name", unique = true)
     private String name;
 
+    @ApiModelProperty(notes = "Albums with specified tag")
     @Builder.Default
     @ManyToMany(mappedBy = "albumTags")
-    @ApiModelProperty(notes = "Albums with specified tag")
     private Set<Album> albums = new HashSet<>();
 
+    @ApiModelProperty(notes = "Album tag user")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @ApiModelProperty(notes = "Album tag user")
     private ApplicationUser user;
 
     @Override

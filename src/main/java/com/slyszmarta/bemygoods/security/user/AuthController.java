@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.xml.bind.ValidationException;
 
 @RestController
 @Api(value = "Authentication")
@@ -27,7 +28,7 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get authentication token.", response = JwtResponse.class)
     @ApiResponse(code = 200, message = "Succesfully logged in.")
-    public JwtResponse login(@RequestBody @Valid JwtRequest jwtRequest) throws Exception {
+    public JwtResponse login(@RequestBody @Valid JwtRequest jwtRequest) {
         return authService.createAuthenticationToken(jwtRequest);
     }
 
@@ -35,7 +36,7 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get authentication token.", response = JwtResponse.class)
     @ApiResponse(code = 200, message = "Succesfully logged in.")
-    public JwtResponse loginUsingForm(@Valid JwtRequest jwtRequest) throws Exception {
+    public JwtResponse loginUsingForm(@Valid JwtRequest jwtRequest) {
         return authService.createAuthenticationToken(jwtRequest);
     }
 
@@ -43,7 +44,7 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Register user", response = String.class)
     @ApiResponse(code = 200, message = "Succesfully registered")
-    public String register(@RequestBody @Valid ApplicationUserDto applicationUserDto) throws Exception {
+    public String register(@RequestBody @Valid ApplicationUserDto applicationUserDto) throws ValidationException {
         authService.registerUser(applicationUserDto);
         return "User registered!";
     }
@@ -52,7 +53,7 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Register user", response = String.class)
     @ApiResponse(code = 200, message = "Succesfully registered")
-    public String registerUsingForm(@Valid ApplicationUserDto applicationUserDto) throws Exception {
+    public String registerUsingForm(@Valid ApplicationUserDto applicationUserDto) throws ValidationException {
         authService.registerUser(applicationUserDto);
         return "User registered!";
     }

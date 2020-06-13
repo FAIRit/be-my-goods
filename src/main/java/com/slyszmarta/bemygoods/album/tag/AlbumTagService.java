@@ -2,7 +2,6 @@ package com.slyszmarta.bemygoods.album.tag;
 
 import com.slyszmarta.bemygoods.album.AlbumDto;
 import com.slyszmarta.bemygoods.album.AlbumMapper;
-import com.slyszmarta.bemygoods.album.AlbumRepository;
 import com.slyszmarta.bemygoods.album.AlbumService;
 import com.slyszmarta.bemygoods.user.ApplicationUserService;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +12,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class AlbumTagService {
 
     private final ApplicationUserService userService;

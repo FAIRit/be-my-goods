@@ -1,12 +1,12 @@
 package com.slyszmarta.bemygoods.testHelpers.response;
 
-import com.slyszmarta.bemygoods.lastFmApi.response.Track;
+import com.slyszmarta.bemygoods.last_fm_api.response.Track;
 
 public class testTrack {
 
-    public static com.slyszmarta.bemygoods.lastFmApi.response.Track track(){
+    public static com.slyszmarta.bemygoods.last_fm_api.response.Track track(){
         String name = "Track(name=The Unforgiven)";
-        Track track = com.slyszmarta.bemygoods.lastFmApi.response.Track.builder()
+        Track track = com.slyszmarta.bemygoods.last_fm_api.response.Track.builder()
                 .name(name)
                 .build();
         return track;

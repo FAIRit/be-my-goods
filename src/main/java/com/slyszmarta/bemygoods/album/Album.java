@@ -10,11 +10,13 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@ApiModel(description = "Album details")
 @Getter
 @Setter
 @Entity(name = "Album")
@@ -22,38 +24,39 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(description = "Album details")
-public class Album {
+public class Album implements Serializable {
 
+    private static final long serialVersionUID = -4748102815645843899L;
+
+    @ApiModelProperty(notes = "Album ID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "album_id", updatable = false, nullable = false)
-    @ApiModelProperty(notes = "Album ID")
     private Long id;
 
-    @Column(name = "musicbrainz_id")
     @ApiModelProperty(notes = "Musicbrainz album ID")
+    @Column(name = "musicbrainz_id")
     private String mbid;
 
+    @ApiModelProperty(notes = "Album name")
     @NotNull
     @Column(name = "name")
-    @ApiModelProperty(notes = "Album name")
     private String name;
 
+    @ApiModelProperty(notes = "Album artist")
     @NotNull
     @Column(name = "artist")
-    @ApiModelProperty(notes = "Album artist")
     private String artist;
 
+    @ApiModelProperty(notes = "Album user")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @ApiModelProperty(notes = "Album user")
     private ApplicationUser user;
 
+    @ApiModelProperty(notes = "Album tags")
     @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "album_tag", joinColumns = {@JoinColumn(name = "album_id")}, inverseJoinColumns = {@JoinColumn(name = "tag_id")})
-    @ApiModelProperty(notes = "Album tags")
     private Set<AlbumTag> albumTags = new HashSet<>();
 
     public void addAlbumTag(AlbumTag albumTag){
@@ -66,9 +69,9 @@ public class Album {
         albumTag.getAlbums().remove(this);
     }
 
+    @ApiModelProperty(notes = "Album tracks")
     @Builder.Default
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ApiModelProperty(notes = "Album tracks")
     private List<Track> tracksList = new ArrayList<>();
 
     public void addTrack(Track track){
@@ -81,9 +84,9 @@ public class Album {
         track.setAlbum(null);
     }
 
-    @Column(name = "wiki", length = 65535, columnDefinition = "TEXT")
-    @Type(type = "text")
     @ApiModelProperty(notes = "Album wikipedia summary")
+    @Type(type = "text")
+    @Column(name = "wiki", length = 65535, columnDefinition = "TEXT")
     private String wiki;
 
     @Override

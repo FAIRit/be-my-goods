@@ -1,5 +1,6 @@
 package com.slyszmarta.bemygoods.security.user;
 
+import com.slyszmarta.bemygoods.exceptions.AuthenticationException;
 import com.slyszmarta.bemygoods.exceptions.UserAlreadyExistsException;
 import com.slyszmarta.bemygoods.security.jwt.JwtRequest;
 import com.slyszmarta.bemygoods.security.jwt.JwtResponse;
@@ -27,20 +28,20 @@ public class AuthService {
     private final JwtToken jwtToken;
     private final ApplicationUserService applicationUserService;
 
-    public JwtResponse createAuthenticationToken(JwtRequest authenticationRequest) throws Exception {
+    public JwtResponse createAuthenticationToken(JwtRequest authenticationRequest) {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = applicationUserService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtToken.generateToken(userDetails);
         return new JwtResponse(token);
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private void authenticate(String username, String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new AuthenticationException("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new AuthenticationException("INVALID_CREDENTIALS", e);
         }
     }
 

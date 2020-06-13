@@ -9,6 +9,7 @@ import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +22,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(description = "User details")
-public class ApplicationUser {
+public class ApplicationUser implements Serializable {
+
+    private static final long serialVersionUID = 2595545382857371135L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

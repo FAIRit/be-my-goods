@@ -1,4 +1,4 @@
-package com.slyszmarta.bemygoods.lastFmApi.response;
+package com.slyszmarta.bemygoods.last_fm_api.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -49,7 +49,7 @@ public class ApplicationUserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username){
         var user = applicationUserRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
         return new ApplicationUserDetails(user);
     }

@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class AlbumTagNotFoundException extends RuntimeException {
 
-    private Long id;
+    private final Long id;
 
     public AlbumTagNotFoundException(Long id) {
         super("Album tag with id " + id + " not found");

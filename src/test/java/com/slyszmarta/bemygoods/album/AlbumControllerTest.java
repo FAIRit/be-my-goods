@@ -1,7 +1,7 @@
 package com.slyszmarta.bemygoods.album;
 
 import com.google.gson.Gson;
-import com.slyszmarta.bemygoods.lastFmApi.response.AlbumResponse;
+import com.slyszmarta.bemygoods.last_fm_api.response.AlbumResponse;
 import com.slyszmarta.bemygoods.security.jwt.JwtToken;
 import com.slyszmarta.bemygoods.user.ApplicationUserService;
 import org.junit.jupiter.api.Test;

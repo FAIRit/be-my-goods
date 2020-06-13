@@ -1,6 +1,6 @@
 package com.slyszmarta.bemygoods.testHelpers.response;
 
-import com.slyszmarta.bemygoods.lastFmApi.response.Track;
+import com.slyszmarta.bemygoods.last_fm_api.response.Track;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,9 +2,7 @@ package com.slyszmarta.bemygoods.avatar;
 
 import com.slyszmarta.bemygoods.exceptions.AvatarStorageException;
 import com.slyszmarta.bemygoods.user.ApplicationUser;
-import com.slyszmarta.bemygoods.user.ApplicationUserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeTypeUtils;
@@ -18,12 +16,10 @@ import static java.util.Objects.nonNull;
 
 @Service
 @Transactional
-@Slf4j
 @RequiredArgsConstructor
 public class AvatarService {
 
     private final AvatarRepository avatarRepository;
-    private final ApplicationUserRepository userRepository;
 
     public Avatar storeFile(MultipartFile file, ApplicationUser user) {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));

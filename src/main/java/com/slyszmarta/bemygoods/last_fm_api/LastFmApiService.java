@@ -1,7 +1,7 @@
-package com.slyszmarta.bemygoods.lastFmApi;
+package com.slyszmarta.bemygoods.last_fm_api;
 
-import com.slyszmarta.bemygoods.lastFmApi.response.AlbumResponse;
-import com.slyszmarta.bemygoods.lastFmApi.response.AlbumSearchResultWrapper;
+import com.slyszmarta.bemygoods.last_fm_api.response.AlbumResponse;
+import com.slyszmarta.bemygoods.last_fm_api.response.AlbumSearchResultWrapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -43,9 +43,9 @@ public class LastFmApiService{
         fullPath.append("/2.0/?method=album.getinfo&api_key=");
         fullPath.append(apiKey);
         fullPath.append("&artist=");
-        fullPath.append(artist.replaceAll(" ", "%20"));
+        fullPath.append(artist.replace(" ", "%20"));
         fullPath.append("&album=");
-        fullPath.append(title.replaceAll(" ", "%20"));
+        fullPath.append(title.replace(" ", "%20"));
         fullPath.append("&format=json");
         return fullPath.toString();
     }

@@ -8,7 +8,6 @@ import java.util.Collections;
 
 public class ApplicationUserDetails extends User {
 
-    private final ApplicationUser user;
     private Long id;
 
     public String getEmail() {
@@ -25,6 +24,15 @@ public class ApplicationUserDetails extends User {
         super(user.getUsername(), user.getPassword(), Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
         id = user.getId();
         email = user.getEmail();
-        this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object rhs) {
+        return super.equals(rhs);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

@@ -1,9 +1,9 @@
 package com.slyszmarta.bemygoods.testHelpers.response;
 
 import com.github.javafaker.Faker;
-import com.slyszmarta.bemygoods.lastFmApi.response.AlbumResponse;
-import com.slyszmarta.bemygoods.lastFmApi.response.Tracks;
-import com.slyszmarta.bemygoods.lastFmApi.response.Wiki;
+import com.slyszmarta.bemygoods.last_fm_api.response.AlbumResponse;
+import com.slyszmarta.bemygoods.last_fm_api.response.Tracks;
+import com.slyszmarta.bemygoods.last_fm_api.response.Wiki;
 
 import static com.slyszmarta.bemygoods.testHelpers.response.testTrackList.trackList;
 

@@ -6,34 +6,37 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
+@ApiModel(description = "Avatar details")
 @Getter
 @Setter
-@Builder
 @Entity(name = "Avatar")
 @Table(name = "avatar")
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-@ApiModel(description = "Avatar details")
-public class Avatar {
+@NoArgsConstructor
+public class Avatar implements Serializable {
 
+    private static final long serialVersionUID = -4182183336520827243L;
+
+    @ApiModelProperty(notes = "Avatar ID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "avatar_id", updatable = false, nullable = false)
-    @ApiModelProperty(notes = "Avatar ID")
     private String id;
 
-    @Column(name = "filetype")
     @ApiModelProperty(notes = "Avatar filetype")
+    @Column(name = "filetype")
     private String fileType;
 
+    @ApiModelProperty(notes = "Large OBject")
     @Lob
     @Column(name = "data")
-    @ApiModelProperty(notes = "Large OBject")
     private byte[] data;
 
+    @ApiModelProperty(notes = "Avatar user")
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @ApiModelProperty(notes = "Avatar user")
     private ApplicationUser user;
 }

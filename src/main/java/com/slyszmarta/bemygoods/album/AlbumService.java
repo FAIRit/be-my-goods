@@ -1,8 +1,8 @@
 package com.slyszmarta.bemygoods.album;
 
 import com.google.gson.Gson;
-import com.slyszmarta.bemygoods.lastFmApi.response.AlbumResponse;
-import com.slyszmarta.bemygoods.lastFmApi.response.Track;
+import com.slyszmarta.bemygoods.last_fm_api.response.AlbumResponse;
+import com.slyszmarta.bemygoods.last_fm_api.response.Track;
 import com.slyszmarta.bemygoods.user.ApplicationUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class AlbumService {
 
     private final AlbumRepository albumRepository;
@@ -29,8 +29,7 @@ public class AlbumService {
 
     public AlbumDto saveAlbum(AlbumResponse albumResponse, Long userId) {
         var user = userService.getExistingUser(userId);
-        var albumToSave = AlbumMapper.INSTANCE.mapResponseToAlbum(albumResponse);
-        albumToSave = getAlbumTracksFromJson(albumResponse);
+        var albumToSave = getAlbumTracksFromJson(albumResponse);
         albumToSave.setWiki(getWikiFromJson(albumResponse));
         user.addAlbum(albumToSave);
         albumRepository.save(albumToSave);
@@ -39,7 +38,6 @@ public class AlbumService {
 
     public void deleteUserAlbum(Long userId, Long albumId) {
         var albumToDelete = getAlbumByIdAndUserId(albumId, userId);
-        var user = userService.getExistingUser(userId);
         albumRepository.delete(albumToDelete);
     }
 
@@ -61,7 +59,7 @@ public class AlbumService {
         AlbumResponse response = gson.fromJson(jsonString, AlbumResponse.class);
         List<Track> trackList = response.getTracks().getTrack();
         Album albumToSave = AlbumMapper.INSTANCE.mapResponseToAlbum(albumResponse);
-        Iterator iterator = trackList.iterator();
+        Iterator<Track> iterator = trackList.iterator();
         while (iterator.hasNext()) {
             com.slyszmarta.bemygoods.album.track.Track track = new com.slyszmarta.bemygoods.album.track.Track();
             StringBuilder builder = new StringBuilder();

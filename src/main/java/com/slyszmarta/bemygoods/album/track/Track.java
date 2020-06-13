@@ -8,6 +8,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@ApiModel(description = "Track details")
 @Getter
 @Setter
 @Entity(name = "Track")
@@ -15,23 +16,22 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(description = "Track details")
 public class Track {
 
+    @ApiModelProperty(notes = "Track ID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "track_id", updatable = false, nullable = false)
-    @ApiModelProperty(notes = "Track ID")
     private Long id;
 
+    @ApiModelProperty(notes = "Track name")
     @NotNull
     @Column(name = "title")
-    @ApiModelProperty(notes = "Track name")
     private String name;
 
+    @ApiModelProperty(notes = "Track's album ID")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "album_id")
-    @ApiModelProperty(notes = "Track's album ID")
     private Album album;
 
     @Override
